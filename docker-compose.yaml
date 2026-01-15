@@ -1,0 +1,32 @@
+services:
+  db:
+    image: postgres:18
+    container_name: $(DB_HOST)
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: $(DB_NAME)
+      POSTGRES_USER: $(DB_USER)
+      POSTGRES_PASSWORD: $(DB_PASSWORD)
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  app:
+    build: .
+    container_name: app
+    restart: unless-stopped
+    env_file:
+      - .env
+    depends_on:
+      - db
+    command: >
+      sh -c "alembic upgrade head && uvicorn app.main:app --host 0.0.0.0 --port 8000"
+    volumes:
+      - .:/app
+    ports:
+      - "8000:8000"
+
+
+volumes:
+  db_data:
