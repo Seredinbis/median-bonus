@@ -1,16 +1,15 @@
 services:
   db:
-    image: postgres:18
-    container_name: $(DB_HOST)
+    image: postgres:16
     restart: unless-stopped
     environment:
-      POSTGRES_DB: $(DB_NAME)
-      POSTGRES_USER: $(DB_USER)
-      POSTGRES_PASSWORD: $(DB_PASSWORD)
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
     volumes:
       - db_data:/var/lib/postgresql/data
     ports:
-      - "5432:5432"
+      - "5433:5432"
 
   app:
     build: .

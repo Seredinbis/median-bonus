@@ -5,8 +5,7 @@ WORKDIR /app
 COPY pyproject.toml uv.lock ./
 RUN pip install --upgrade pip
 RUN pip install uv
-RUN uv config virtualenvs.create false
-RUN uv install --no-dev
+RUN uv pip install --system --no-cache -r pyproject.toml
 
 COPY . .
 
