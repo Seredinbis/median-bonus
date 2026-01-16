@@ -1,7 +1,6 @@
 import uuid
 
-from sqlalchemy import Enum, String
-from sqlalchemy.dialects.postgresql import UUID
+from sqlalchemy import Enum, String, UUID
 from sqlalchemy.orm import Mapped, mapped_column
 
 from app.database.base import TimestampMixin

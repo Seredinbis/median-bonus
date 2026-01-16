@@ -11,7 +11,7 @@ class BusinessCreate(BaseModel):
 class BusinessRead(BaseModel):
     id: int
     email: EmailStr
-    is_active: Status
+    status: Status
 
     class Config:
         from_attributes = True
