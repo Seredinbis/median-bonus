@@ -1,4 +1,3 @@
-from fastapi import Depends
 from pydantic import EmailStr
 
 from app.domain.business import Business, BusinessRepository
@@ -8,20 +7,20 @@ from app.security import hash_password
 
 
 class BusinessService:
-    def __init__(self, repo: BusinessRepository = Depends(get_business_repository)):
-        self.repo = repo
+    def __init__(self, repository: BusinessRepository = get_business_repository()):
+        self.repository = repository
 
     async def get_by_email(
         self,
         email: EmailStr,
     ) -> Business | None:
-        return await self.repo.get_by_email(email)
+        return await self.repository.get_by_email(email)
 
     async def register(
         self,
         data: BusinessCreate,
     ) -> Business:
-        existing = await self.repo.get_by_email(data.email)
+        existing = await self.repository.get_by_email(data.email)
         if existing:
             raise ValueError("Email already registered")
 
@@ -29,4 +28,4 @@ class BusinessService:
             email=str(data.email),
             password_hash=hash_password(data.password_hash),
         )
-        return await self.repo.add(account)
+        return await self.repository.add(account)

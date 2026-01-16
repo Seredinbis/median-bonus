@@ -13,10 +13,10 @@ async def lifespan(app: FastAPI):
     yield
 
 
-app = FastAPI()
+app = FastAPI(lifespan=lifespan)
+app.include_router(business_router)
 
 if __name__ == "__main__":
-    app.include_router(business_router)
     uvicorn.run(
         "app.__main__:app",
         host="0.0.0.0",
