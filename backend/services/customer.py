@@ -7,6 +7,7 @@ from backend.schemas.customer import (
     CustomerListResponse,
     CustomerResponse,
 )
+from backend.utils.exception_handler import NotFoundError
 
 
 class CustomerService:
@@ -19,16 +20,23 @@ class CustomerService:
         existing = await self.repository.get_by_phone(data.phone)
         if existing:
             return CustomerResponse.model_validate(existing)
+
         customer = Customer(name=data.name, phone=data.phone)
         result = await self.repository.create(customer)
         return CustomerResponse.model_validate(result)
 
     async def get_by_phone(self, data: CustomerGetByPhoneRequest) -> CustomerResponse:
         result = await self.repository.get_by_phone(data.phone)
+        if not result:
+            raise NotFoundError("Customer")
+
         return CustomerResponse.model_validate(result)
 
     async def get_all(self) -> CustomerListResponse:
         result = await self.repository.get_all()
+        if not result:
+            raise NotFoundError("Customers")
+
         return CustomerListResponse(
             customers=[CustomerResponse.model_validate(customer) for customer in result]
         )

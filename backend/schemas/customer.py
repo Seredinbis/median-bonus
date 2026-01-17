@@ -15,6 +15,9 @@ class CustomerGetByPhoneRequest(BaseModel):
     phone: str
 
 
+3
+
+
 class CustomerResponse(BaseModel):
     id: uuid.UUID
     phone: str
