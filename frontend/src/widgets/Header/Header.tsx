@@ -10,16 +10,16 @@ export default function Header() {
   };
 
   return (
-    <header className="flex items-center justify-between px-6 py-4 bg-white border-b border-gray-200">
+    <header className="flex items-center justify-between px-6 py-4 border-b border-gray-200">
       <div className="flex items-center gap-2">
         <div className="w-8 h-8 bg-orange-500 rounded-lg"></div> {/* Заглушка логотипа */}
-        <span className="text-xl font-bold text-gray-800">Median Bonus</span>
+        <span className="text-xl font-bold">Median Bonus</span>
       </div>
       
       <div className="flex items-center gap-4">
         <nav className="hidden md:flex gap-6 mr-6">
-          <a href="#" className="text-sm font-medium text-gray-600 hover:text-orange-500">Главная</a>
-          <a href="#" className="text-sm font-medium text-gray-600 hover:text-orange-500">История</a>
+          <a href="#" className="text-sm font-medium hover:text-orange-500">Главная</a>
+          <a href="#" className="text-sm font-medium hover:text-orange-500">История</a>
         </nav>
         
         <button 
