@@ -32,7 +32,7 @@ class EmployeeService:
         return EmployeeResponse.model_validate(result)
 
     async def delete(self, data: EmployeeDeleteRequest) -> EmployeeResponse | None:
-        existing = await self.repository.get(str(data.email))
+        existing = await self.repository.get_by_id(data.id)
         if not existing:
             raise NotFoundError("Employee")
 

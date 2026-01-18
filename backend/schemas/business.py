@@ -15,7 +15,7 @@ class BusinessCreateRequest(BaseModel):
 
 
 class BusinessDeleteRequest(BaseModel):
-    email: EmailStr
+    id: uuid.UUID
 
 
 class BusinessGetByEmailRequest(BaseModel):

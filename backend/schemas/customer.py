@@ -11,6 +11,10 @@ class CustomerCreateRequest(BaseModel):
         from_attributes = True
 
 
+class CustomerDeleteRequest(BaseModel):
+    id: uuid.UUID
+
+
 class CustomerGetByPhoneRequest(BaseModel):
     phone: str
 

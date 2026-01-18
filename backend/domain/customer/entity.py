@@ -1,9 +1,10 @@
 import uuid
 
-from sqlalchemy import UUID, ForeignKey, String
+from sqlalchemy import UUID, Enum, ForeignKey, String
 from sqlalchemy.orm import Mapped, mapped_column
 
 from backend.database.base import TimestampMixin
+from backend.domain.customer import CustomerStatus
 
 
 class Customer(TimestampMixin):
@@ -18,6 +19,12 @@ class Customer(TimestampMixin):
     name: Mapped[str] = mapped_column(String(63))
 
     phone: Mapped[str] = mapped_column(unique=True, index=True)
+
+    status: Mapped[CustomerStatus] = mapped_column(
+        Enum(CustomerStatus, name="business_status"),
+        nullable=False,
+        default=CustomerStatus.ACTIVATED,
+    )
 
 
 class CustomerGift(TimestampMixin):

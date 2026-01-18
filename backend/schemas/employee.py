@@ -16,7 +16,7 @@ class EmployeeCreateRequest(BaseModel):
 
 
 class EmployeeDeleteRequest(BaseModel):
-    email: EmailStr
+    id: uuid.UUID
 
 
 class EmployeeGetByEmailRequest(BaseModel):

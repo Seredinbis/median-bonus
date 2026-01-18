@@ -28,7 +28,7 @@ class StoreService:
         return StoreResponse.model_validate(result)
 
     async def delete(self, data: StoreDeleteRequest) -> StoreResponse | None:
-        existing = await self.repository.get(name=data.name, business_id=data.business_id)
+        existing = await self.repository.get_by_id(data.id)
         if not existing:
             raise NotFoundError("Store")
 

@@ -1,8 +1,10 @@
+from backend.domain.customer import CustomerStatus
 from backend.domain.customer.entity import Customer
 from backend.domain.customer.repository import CustomerRepository
 from backend.factories.customer import get_customer_repository
 from backend.schemas.customer import (
     CustomerCreateRequest,
+    CustomerDeleteRequest,
     CustomerGetByIDRequest,
     CustomerGetByPhoneRequest,
     CustomerListResponse,
@@ -22,6 +24,16 @@ class CustomerService:
 
         customer = Customer(name=data.name, phone=data.phone)
         result = await self.repository.create(customer)
+        return CustomerResponse.model_validate(result)
+
+    async def delete(self, data: CustomerDeleteRequest) -> CustomerResponse | None:
+        existing = await self.repository.get_by_id(data.id)
+        if not existing:
+            raise NotFoundError("Customer")
+
+        existing.status = CustomerStatus.SUSPENDED
+        result = await self.repository.update(existing)
+
         return CustomerResponse.model_validate(result)
 
     async def get(self, data: CustomerGetByPhoneRequest) -> CustomerResponse:

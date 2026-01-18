@@ -33,7 +33,7 @@ class ProductService:
         return ProductResponse.model_validate(result)
 
     async def delete(self, data: ProductDeleteRequest) -> ProductResponse | None:
-        existing = await self.repository.get(name=data.name, store_id=data.store_id)
+        existing = await self.repository.get_by_id(data.id)
         if not existing:
             raise NotFoundError("Product")
 

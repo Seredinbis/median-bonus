@@ -11,8 +11,7 @@ class StoreCreateRequest(BaseModel):
 
 
 class StoreDeleteRequest(BaseModel):
-    name: str
-    business_id: uuid.UUID
+    id: uuid.UUID
 
 
 class StoreUpdateRequest(BaseModel):

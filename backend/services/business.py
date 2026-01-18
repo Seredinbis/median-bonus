@@ -31,7 +31,7 @@ class BusinessService:
         return BusinessResponse.model_validate(result)
 
     async def delete(self, data: BusinessDeleteRequest) -> BusinessResponse | None:
-        existing = await self.repository.get(str(data.email))
+        existing = await self.repository.get_by_id(data.id)
         if not existing:
             raise NotFoundError("Business")
 
