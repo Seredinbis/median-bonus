@@ -30,13 +30,13 @@ async def create(
     return await service.create(data)
 
 
-# TODO: Should suspend by id?
+# TODO: Should delete by id?
 @router.post(
-    "/suspend",
+    "/delete",
     status_code=status.HTTP_200_OK,
     response_model=BusinessResponse,
 )
-async def suspend(
+async def delete(
     data: BusinessDeleteRequest,
     service: BusinessService = Depends(get_business_service),
 ) -> BusinessResponse | None:
