@@ -44,15 +44,15 @@ async def delete(
 
 
 @router.post(
-    "/get_by_name",
+    "/get",
     status_code=status.HTTP_200_OK,
     response_model=ProductResponse,
 )
-async def get_by_name(
+async def get(
     data: ProductGetByNameRequest,
     service: ProductService = Depends(get_product_service),
 ) -> ProductResponse | None:
-    return await service.get_by_name(data)
+    return await service.get(data)
 
 
 @router.post(

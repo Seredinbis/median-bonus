@@ -11,7 +11,7 @@ if TYPE_CHECKING:
 
 
 class EmployeeRepository(BaseRepository):
-    async def get_by_email(self, email: str) -> Employee | None:
+    async def get(self, email: str) -> Employee | None:
         result = await self.session.execute(
             select(Employee).where(
                 and_(

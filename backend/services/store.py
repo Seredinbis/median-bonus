@@ -18,7 +18,7 @@ class StoreService:
         self.repository = repository
 
     async def create(self, data: StoreCreateRequest) -> StoreResponse:
-        existing = await self.repository.get_by_name(name=data.name, business_id=data.business_id)
+        existing = await self.repository.get(name=data.name, business_id=data.business_id)
         if existing:
             raise AlreadyExistsError("Store")
 
@@ -28,7 +28,7 @@ class StoreService:
         return StoreResponse.model_validate(result)
 
     async def delete(self, data: StoreDeleteRequest) -> StoreResponse | None:
-        existing = await self.repository.get_by_name(name=data.name, business_id=data.business_id)
+        existing = await self.repository.get(name=data.name, business_id=data.business_id)
         if not existing:
             raise NotFoundError("Store")
 
@@ -38,7 +38,7 @@ class StoreService:
         return StoreResponse.model_validate(result)
 
     async def update(self, data: StoreUpdateRequest) -> StoreResponse | None:
-        existing = await self.repository.get_by_name(name=data.name, business_id=data.business_id)
+        existing = await self.repository.get(name=data.name, business_id=data.business_id)
         if not existing:
             raise NotFoundError("Store")
 
@@ -48,8 +48,8 @@ class StoreService:
 
         return StoreResponse.model_validate(result)
 
-    async def get_by_name(self, data: StoreGetByNameRequest) -> StoreResponse | None:
-        result = await self.repository.get_by_name(name=data.name, business_id=data.business_id)
+    async def get(self, data: StoreGetByNameRequest) -> StoreResponse | None:
+        result = await self.repository.get(name=data.name, business_id=data.business_id)
         if not result:
             raise NotFoundError("Store")
 

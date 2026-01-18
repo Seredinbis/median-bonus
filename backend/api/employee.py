@@ -44,15 +44,15 @@ async def suspend(
 
 
 @router.post(
-    "/get_by_email",
+    "/get",
     status_code=status.HTTP_200_OK,
     response_model=EmployeeResponse,
 )
-async def get_by_email(
+async def get(
     data: EmployeeGetByEmailRequest,
     service: EmployeeService = Depends(get_employee_service),
 ) -> EmployeeResponse | None:
-    return await service.get_by_email(data)
+    return await service.get(data)
 
 
 @router.post(

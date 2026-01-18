@@ -10,7 +10,7 @@ if TYPE_CHECKING:
 
 
 class StoreRepository(BaseRepository):
-    async def get_by_name(self, name: str, business_id: "uuid.UUID") -> Store | None:
+    async def get(self, name: str, business_id: "uuid.UUID") -> Store | None:
         result = await self.session.execute(
             select(Store).where(
                 and_(

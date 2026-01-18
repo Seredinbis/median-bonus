@@ -30,15 +30,15 @@ async def create(
 
 
 @router.post(
-    "/get_by_phone",
+    "/get",
     status_code=status.HTTP_200_OK,
     response_model=CustomerResponse,
 )
-async def get_by_phone(
+async def get(
     data: CustomerGetByPhoneRequest,
     service: CustomerService = Depends(get_customer_service),
 ) -> CustomerResponse:
-    return await service.get_by_phone(data)
+    return await service.get(data)
 
 
 @router.post(

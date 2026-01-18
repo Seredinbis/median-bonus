@@ -44,15 +44,15 @@ async def delete(
 
 
 @router.post(
-    "/get_by_email",
+    "/get",
     status_code=status.HTTP_200_OK,
     response_model=BusinessResponse,
 )
-async def get_by_email(
+async def get(
     data: BusinessGetByEmailRequest,
     service: BusinessService = Depends(get_business_service),
 ) -> BusinessResponse | None:
-    return await service.get_by_email(data)
+    return await service.get(data)
 
 
 @router.post(

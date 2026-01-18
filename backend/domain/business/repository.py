@@ -10,7 +10,7 @@ if TYPE_CHECKING:
 
 
 class BusinessRepository(BaseRepository):
-    async def get_by_email(self, email: str) -> Business | None:
+    async def get(self, email: str) -> Business | None:
         result = await self.session.execute(
             select(Business).where(
                 and_(

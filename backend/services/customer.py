@@ -16,7 +16,7 @@ class CustomerService:
         self.repository = repository
 
     async def create(self, data: CustomerCreateRequest) -> CustomerResponse:
-        existing = await self.repository.get_by_phone(data.phone)
+        existing = await self.repository.get(data.phone)
         if existing:
             return CustomerResponse.model_validate(existing)
 
@@ -24,8 +24,8 @@ class CustomerService:
         result = await self.repository.create(customer)
         return CustomerResponse.model_validate(result)
 
-    async def get_by_phone(self, data: CustomerGetByPhoneRequest) -> CustomerResponse:
-        result = await self.repository.get_by_phone(data.phone)
+    async def get(self, data: CustomerGetByPhoneRequest) -> CustomerResponse:
+        result = await self.repository.get(data.phone)
         if not result:
             raise NotFoundError("Customer")
 

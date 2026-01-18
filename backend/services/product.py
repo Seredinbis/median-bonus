@@ -18,7 +18,7 @@ class ProductService:
         self.repository = repository
 
     async def create(self, data: ProductCreateRequest) -> ProductResponse:
-        existing = await self.repository.get_by_name(name=data.name, store_id=data.store_id)
+        existing = await self.repository.get(name=data.name, store_id=data.store_id)
         if existing:
             raise AlreadyExistsError("Product")
 
@@ -33,7 +33,7 @@ class ProductService:
         return ProductResponse.model_validate(result)
 
     async def delete(self, data: ProductDeleteRequest) -> ProductResponse | None:
-        existing = await self.repository.get_by_name(name=data.name, store_id=data.store_id)
+        existing = await self.repository.get(name=data.name, store_id=data.store_id)
         if not existing:
             raise NotFoundError("Product")
 
@@ -43,7 +43,7 @@ class ProductService:
         return ProductResponse.model_validate(result)
 
     async def update(self, data: ProductUpdateRequest) -> ProductResponse | None:
-        existing = await self.repository.get_by_name(name=data.name, store_id=data.store_id)
+        existing = await self.repository.get(name=data.name, store_id=data.store_id)
         if not existing:
             raise NotFoundError("Product")
 
@@ -56,8 +56,8 @@ class ProductService:
 
         return ProductResponse.model_validate(result)
 
-    async def get_by_name(self, data: ProductGetByNameRequest) -> ProductResponse | None:
-        result = await self.repository.get_by_name(name=data.name, store_id=data.store_id)
+    async def get(self, data: ProductGetByNameRequest) -> ProductResponse | None:
+        result = await self.repository.get(name=data.name, store_id=data.store_id)
         if not result:
             raise NotFoundError("Product")
 

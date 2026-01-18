@@ -17,7 +17,7 @@ class BusinessService:
         self.repository = repository
 
     async def create(self, data: BusinessCreateRequest) -> BusinessResponse:
-        existing = await self.repository.get_by_email(str(data.email))
+        existing = await self.repository.get(str(data.email))
         if existing:
             raise AlreadyExistsError("Email")
 
@@ -31,7 +31,7 @@ class BusinessService:
         return BusinessResponse.model_validate(result)
 
     async def delete(self, data: BusinessDeleteRequest) -> BusinessResponse | None:
-        existing = await self.repository.get_by_email(str(data.email))
+        existing = await self.repository.get(str(data.email))
         if not existing:
             raise NotFoundError("Business")
 
@@ -40,8 +40,8 @@ class BusinessService:
 
         return BusinessResponse.model_validate(result)
 
-    async def get_by_email(self, data: BusinessGetByEmailRequest) -> BusinessResponse | None:
-        result = await self.repository.get_by_email(str(data.email))
+    async def get(self, data: BusinessGetByEmailRequest) -> BusinessResponse | None:
+        result = await self.repository.get(str(data.email))
         if not result:
             raise NotFoundError("Business")
 

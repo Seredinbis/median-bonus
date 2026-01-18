@@ -17,7 +17,7 @@ class EmployeeService:
         self.repository = repository
 
     async def create(self, data: EmployeeCreateRequest) -> EmployeeResponse:
-        existing = await self.repository.get_by_email(str(data.email))
+        existing = await self.repository.get(str(data.email))
         if existing:
             raise AlreadyExistsError("Email")
 
@@ -32,7 +32,7 @@ class EmployeeService:
         return EmployeeResponse.model_validate(result)
 
     async def delete(self, data: EmployeeDeleteRequest) -> EmployeeResponse | None:
-        existing = await self.repository.get_by_email(str(data.email))
+        existing = await self.repository.get(str(data.email))
         if not existing:
             raise NotFoundError("Employee")
 
@@ -41,8 +41,8 @@ class EmployeeService:
 
         return EmployeeResponse.model_validate(result)
 
-    async def get_by_email(self, data: EmployeeGetByEmailRequest) -> EmployeeResponse | None:
-        result = await self.repository.get_by_email(str(data.email))
+    async def get(self, data: EmployeeGetByEmailRequest) -> EmployeeResponse | None:
+        result = await self.repository.get(str(data.email))
         if not result:
             raise NotFoundError("Employee")
 

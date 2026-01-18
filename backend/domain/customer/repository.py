@@ -10,7 +10,7 @@ if TYPE_CHECKING:
 
 
 class CustomerRepository(BaseRepository):
-    async def get_by_phone(self, phone: str) -> Customer | None:
+    async def get(self, phone: str) -> Customer | None:
         result = await self.session.execute(select(Customer).where(Customer.phone == phone))
         return result.scalar_one_or_none()
 
