@@ -19,11 +19,11 @@ router = APIRouter(prefix="/business", tags=["business"])
 
 
 @router.post(
-    "/register",
+    "/create",
     status_code=status.HTTP_201_CREATED,
     response_model=BusinessResponse,
 )
-async def register(
+async def create(
     data: BusinessCreateRequest,
     service: BusinessService = Depends(get_business_service),
 ) -> BusinessResponse:
