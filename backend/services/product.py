@@ -3,6 +3,7 @@ from backend.factories.product import get_product_repository
 from backend.schemas.product import (
     ProductCreateRequest,
     ProductDeleteRequest,
+    ProductGetByIDRequest,
     ProductGetByNameRequest,
     ProductListRequest,
     ProductListResponse,
@@ -57,6 +58,13 @@ class ProductService:
 
     async def get_by_name(self, data: ProductGetByNameRequest) -> ProductResponse | None:
         result = await self.repository.get_by_name(name=data.name, store_id=data.store_id)
+        if not result:
+            raise NotFoundError("Product")
+
+        return ProductResponse.model_validate(result)
+
+    async def get_by_id(self, data: ProductGetByIDRequest) -> ProductResponse | None:
+        result = await self.repository.get_by_id(data.id)
         if not result:
             raise NotFoundError("Product")
 

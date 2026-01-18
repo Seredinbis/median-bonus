@@ -3,6 +3,7 @@ from fastapi import APIRouter, Depends, status
 from backend.factories.customer import get_customer_service
 from backend.schemas.customer import (
     CustomerCreateRequest,
+    CustomerGetByIDRequest,
     CustomerGetByPhoneRequest,
     CustomerListResponse,
     CustomerResponse,
@@ -38,6 +39,18 @@ async def get_by_phone(
     service: CustomerService = Depends(get_customer_service),
 ) -> CustomerResponse:
     return await service.get_by_phone(data)
+
+
+@router.post(
+    "/get_by_id",
+    status_code=status.HTTP_200_OK,
+    response_model=CustomerResponse,
+)
+async def get_by_id(
+    data: CustomerGetByIDRequest,
+    service: CustomerService = Depends(get_customer_service),
+) -> CustomerResponse | None:
+    return await service.get_by_id(data)
 
 
 @router.post(

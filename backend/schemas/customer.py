@@ -15,6 +15,10 @@ class CustomerGetByPhoneRequest(BaseModel):
     phone: str
 
 
+class CustomerGetByIDRequest(BaseModel):
+    id: uuid.UUID
+
+
 class CustomerResponse(BaseModel):
     id: uuid.UUID
     phone: str

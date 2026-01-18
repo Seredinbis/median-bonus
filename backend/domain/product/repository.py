@@ -22,6 +22,10 @@ class ProductRepository(BaseRepository):
         )
         return result.scalar_one_or_none()
 
+    async def get_by_id(self, id: "uuid.UUID") -> Product | None:
+        result = await self.session.execute(select(Product).where(Product.id == id))
+        return result.scalar_one_or_none()
+
     async def get_all(self, store_id: "uuid.UUID") -> list[Product | None]:
         result = await self.session.execute(
             select(Product).where(

@@ -22,14 +22,7 @@ class BusinessRepository(BaseRepository):
         return result.scalar_one_or_none()
 
     async def get_by_id(self, id: "uuid.UUID") -> Business | None:
-        result = await self.session.execute(
-            select(Business).where(
-                and_(
-                    Business.id == id,
-                    Business.status != BusinessStatus.SUSPENDED,
-                )
-            )
-        )
+        result = await self.session.execute(select(Business).where(Business.id == id))
         return result.scalar_one_or_none()
 
     async def get_all(self) -> list[Business | None]:

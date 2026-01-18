@@ -23,14 +23,7 @@ class EmployeeRepository(BaseRepository):
         return result.scalar_one_or_none()
 
     async def get_by_id(self, id: "uuid.UUID") -> Employee | None:
-        result = await self.session.execute(
-            select(Employee).where(
-                and_(
-                    Employee.id == id,
-                    Employee.status != EmployeeStatus.SUSPENDED,
-                )
-            )
-        )
+        result = await self.session.execute(select(Employee).where(Employee.id == id))
         return result.scalar_one_or_none()
 
     async def get_all(self) -> list[Employee | None]:

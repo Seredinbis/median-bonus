@@ -3,6 +3,7 @@ from backend.domain.customer.repository import CustomerRepository
 from backend.factories.customer import get_customer_repository
 from backend.schemas.customer import (
     CustomerCreateRequest,
+    CustomerGetByIDRequest,
     CustomerGetByPhoneRequest,
     CustomerListResponse,
     CustomerResponse,
@@ -25,6 +26,13 @@ class CustomerService:
 
     async def get_by_phone(self, data: CustomerGetByPhoneRequest) -> CustomerResponse:
         result = await self.repository.get_by_phone(data.phone)
+        if not result:
+            raise NotFoundError("Customer")
+
+        return CustomerResponse.model_validate(result)
+
+    async def get_by_id(self, data: CustomerGetByIDRequest) -> CustomerResponse | None:
+        result = await self.repository.get_by_id(data.id)
         if not result:
             raise NotFoundError("Customer")
 

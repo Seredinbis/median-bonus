@@ -4,6 +4,7 @@ from backend.factories.product import get_product_service
 from backend.schemas.product import (
     ProductCreateRequest,
     ProductDeleteRequest,
+    ProductGetByIDRequest,
     ProductGetByNameRequest,
     ProductListRequest,
     ProductListResponse,
@@ -52,6 +53,18 @@ async def get_by_name(
     service: ProductService = Depends(get_product_service),
 ) -> ProductResponse | None:
     return await service.get_by_name(data)
+
+
+@router.post(
+    "/get_by_id",
+    status_code=status.HTTP_200_OK,
+    response_model=ProductResponse,
+)
+async def get_by_id(
+    data: ProductGetByIDRequest,
+    service: ProductService = Depends(get_product_service),
+) -> ProductResponse | None:
+    return await service.get_by_id(data)
 
 
 @router.post(

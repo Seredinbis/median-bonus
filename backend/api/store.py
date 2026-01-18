@@ -4,6 +4,7 @@ from backend.factories.store import get_store_service
 from backend.schemas.store import (
     StoreCreateRequest,
     StoreDeleteRequest,
+    StoreGetByIDRequest,
     StoreGetByNameRequest,
     StoreListRequest,
     StoreListResponse,
@@ -52,6 +53,18 @@ async def get_by_name(
     service: StoreService = Depends(get_store_service),
 ) -> StoreResponse | None:
     return await service.get_by_name(data)
+
+
+@router.post(
+    "/get_by_id",
+    status_code=status.HTTP_200_OK,
+    response_model=StoreResponse,
+)
+async def get_by_id(
+    data: StoreGetByIDRequest,
+    service: StoreService = Depends(get_store_service),
+) -> StoreResponse | None:
+    return await service.get_by_id(data)
 
 
 @router.post(

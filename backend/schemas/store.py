@@ -27,6 +27,10 @@ class StoreGetByNameRequest(BaseModel):
     business_id: uuid.UUID
 
 
+class StoreGetByIDRequest(BaseModel):
+    id: uuid.UUID
+
+
 class StoreListRequest(BaseModel):
     business_id: uuid.UUID
 

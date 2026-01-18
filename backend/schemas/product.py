@@ -32,6 +32,10 @@ class ProductGetByNameRequest(BaseModel):
     store_id: uuid.UUID
 
 
+class ProductGetByIDRequest(BaseModel):
+    id: uuid.UUID
+
+
 class ProductListRequest(BaseModel):
     store_id: uuid.UUID
 

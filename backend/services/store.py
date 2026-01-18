@@ -3,6 +3,7 @@ from backend.factories.store import get_store_repository
 from backend.schemas.store import (
     StoreCreateRequest,
     StoreDeleteRequest,
+    StoreGetByIDRequest,
     StoreGetByNameRequest,
     StoreListRequest,
     StoreListResponse,
@@ -49,6 +50,13 @@ class StoreService:
 
     async def get_by_name(self, data: StoreGetByNameRequest) -> StoreResponse | None:
         result = await self.repository.get_by_name(name=data.name, business_id=data.business_id)
+        if not result:
+            raise NotFoundError("Store")
+
+        return StoreResponse.model_validate(result)
+
+    async def get_by_id(self, data: StoreGetByIDRequest) -> StoreResponse | None:
+        result = await self.repository.get_by_id(data.id)
         if not result:
             raise NotFoundError("Store")
 
