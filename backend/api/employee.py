@@ -19,24 +19,23 @@ router = APIRouter(prefix="/employee", tags=["employee"])
 
 
 @router.post(
-    "/register",
+    "/create",
     status_code=status.HTTP_201_CREATED,
     response_model=EmployeeResponse,
 )
-async def register(
+async def create(
     data: EmployeeCreateRequest,
     service: EmployeeService = Depends(get_employee_service),
 ) -> EmployeeResponse:
     return await service.create(data)
 
 
-# TODO: Should suspend by id?
 @router.post(
-    "/suspend",
+    "/delete",
     status_code=status.HTTP_200_OK,
     response_model=EmployeeResponse,
 )
-async def suspend(
+async def delete(
     data: EmployeeDeleteRequest,
     service: EmployeeService = Depends(get_employee_service),
 ) -> EmployeeResponse | None:

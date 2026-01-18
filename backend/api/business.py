@@ -30,7 +30,6 @@ async def create(
     return await service.create(data)
 
 
-# TODO: Should delete by id?
 @router.post(
     "/delete",
     status_code=status.HTTP_200_OK,

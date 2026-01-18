@@ -5,7 +5,7 @@ from typing import Any
 import uvicorn
 from fastapi import FastAPI
 
-from backend.api import business_router, customer_router, product_router, store_router
+from backend.api import business_router, customer_router, employee_router, product_router, store_router
 from backend.database.bootstrap import drop_database, init_database
 from backend.settings import app_settings
 from backend.utils.exception_handler import register_exception_handlers
@@ -22,7 +22,7 @@ async def lifespan(app: FastAPI) -> AsyncGenerator[None, Any]:  # noqa
 app = FastAPI(lifespan=lifespan, title="MedianBonus")
 register_exception_handlers(app)
 
-routers = [business_router, customer_router, product_router, store_router]
+routers = [business_router, customer_router, employee_router, product_router, store_router]
 for router in routers:
     app.include_router(router)
 

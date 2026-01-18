@@ -3,6 +3,7 @@ from fastapi import APIRouter, Depends, status
 from backend.factories.customer import get_customer_service
 from backend.schemas.customer import (
     CustomerCreateRequest,
+    CustomerDeleteRequest,
     CustomerGetByIDRequest,
     CustomerGetByPhoneRequest,
     CustomerListResponse,
@@ -27,6 +28,18 @@ async def create(
     service: CustomerService = Depends(get_customer_service),
 ) -> CustomerResponse:
     return await service.create(data)
+
+
+@router.post(
+    "/delete",
+    status_code=status.HTTP_200_OK,
+    response_model=CustomerResponse,
+)
+async def delete(
+    data: CustomerDeleteRequest,
+    service: CustomerService = Depends(get_customer_service),
+) -> CustomerResponse | None:
+    return await service.delete(data)
 
 
 @router.post(
