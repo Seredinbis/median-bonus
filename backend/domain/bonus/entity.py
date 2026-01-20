@@ -3,19 +3,13 @@ import uuid
 from sqlalchemy import UUID, Enum, ForeignKey, Integer
 from sqlalchemy.orm import Mapped, mapped_column
 
-from backend.database.base import TimestampMixin
+from backend.domain.base.entity import BaseModel
 
 from .enum import BonusType
 
 
-class Bonus(TimestampMixin):
+class Bonus(BaseModel):
     __tablename__ = "bonus_programs"
-
-    id: Mapped[uuid.UUID] = mapped_column(
-        UUID(as_uuid=True),
-        primary_key=True,
-        default=uuid.uuid4,
-    )
 
     type: Mapped[BonusType] = mapped_column(
         Enum(BonusType, name="bonus_type"),

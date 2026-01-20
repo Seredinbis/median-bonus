@@ -1,22 +1,20 @@
+import uuid
+
 from fastapi import APIRouter, Depends, status
 
 from backend.factories.service import get_product_service
 from backend.schemas.product import (
+    ProductAllByStoreRequest,
     ProductCreateRequest,
     ProductDeleteRequest,
-    ProductGetByIDRequest,
-    ProductGetByNameRequest,
-    ProductListRequest,
+    ProductGetByNameInStoreRequest,
     ProductListResponse,
     ProductResponse,
+    ProductUpdateRequest,
 )
 from backend.services.product import ProductService
 
 router = APIRouter(prefix="/product", tags=["product"])
-
-
-# All APIs consist of POST methods due to the future need for RBAC and JWT verification.
-# TODO: RBAC, JWT
 
 
 @router.post(
@@ -31,9 +29,21 @@ async def create(
     return await service.create(data)
 
 
-@router.post(
+@router.patch(
+    "/update",
+    status_code=status.HTTP_202_ACCEPTED,
+    response_model=ProductResponse,
+)
+async def update(
+    data: ProductUpdateRequest,
+    service: ProductService = Depends(get_product_service),
+) -> ProductResponse | None:
+    return await service.update(data)
+
+
+@router.delete(
     "/delete",
-    status_code=status.HTTP_200_OK,
+    status_code=status.HTTP_204_NO_CONTENT,
     response_model=ProductResponse,
 )
 async def delete(
@@ -43,37 +53,48 @@ async def delete(
     return await service.delete(data)
 
 
-@router.post(
-    "/get",
+@router.get(
+    "/{id}",
     status_code=status.HTTP_200_OK,
     response_model=ProductResponse,
 )
 async def get(
-    data: ProductGetByNameRequest,
+    id: uuid.UUID,  # noqa
     service: ProductService = Depends(get_product_service),
 ) -> ProductResponse | None:
-    return await service.get(data)
+    return await service.get(id)
 
 
-@router.post(
-    "/get_by_id",
-    status_code=status.HTTP_200_OK,
-    response_model=ProductResponse,
-)
-async def get_by_id(
-    data: ProductGetByIDRequest,
-    service: ProductService = Depends(get_product_service),
-) -> ProductResponse | None:
-    return await service.get_by_id(data)
-
-
-@router.post(
-    "/get_all",
+@router.get(
+    "/",
     status_code=status.HTTP_200_OK,
     response_model=ProductListResponse,
 )
 async def get_all(
-    data: ProductListRequest,
     service: ProductService = Depends(get_product_service),
 ) -> ProductListResponse:
-    return await service.get_all(data)
+    return await service.get_all()
+
+
+@router.post(
+    "/get_by_name_in_store",
+    status_code=status.HTTP_200_OK,
+    response_model=ProductResponse,
+)
+async def get_by_name_in_store(
+    data: ProductGetByNameInStoreRequest,
+    service: ProductService = Depends(get_product_service),
+) -> ProductResponse | None:
+    return await service.get_by_name_in_store(data)
+
+
+@router.get(
+    "/",
+    status_code=status.HTTP_200_OK,
+    response_model=ProductListResponse,
+)
+async def get_all_by_store(
+    data: ProductAllByStoreRequest,
+    service: ProductService = Depends(get_product_service),
+) -> ProductListResponse:
+    return await service.get_all_by_store(data)

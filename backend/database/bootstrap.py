@@ -1,5 +1,6 @@
 # ruff: noqa: F401
 # noinspection PyUnresolvedReferences
+from backend.domain.base.entity import Base
 from backend.domain.bonus import Bonus, BonusType
 
 # noinspection PyUnresolvedReferences
@@ -14,7 +15,6 @@ from backend.domain.product import Product, ProductStatus
 # noinspection PyUnresolvedReferences
 from backend.domain.store import Store, StoreStatus
 
-from .base import Base
 from .session import engine
 
 

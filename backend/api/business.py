@@ -1,3 +1,5 @@
+import uuid
+
 from fastapi import APIRouter, Depends, status
 
 from backend.factories.service import get_business_service
@@ -5,17 +7,13 @@ from backend.schemas.business import (
     BusinessCreateRequest,
     BusinessDeleteRequest,
     BusinessGetByEmailRequest,
-    BusinessGetByIDRequest,
     BusinessListResponse,
     BusinessResponse,
+    BusinessUpdateRequest,
 )
 from backend.services.business import BusinessService
 
 router = APIRouter(prefix="/business", tags=["business"])
-
-
-# All APIs consist of POST methods due to the future need for RBAC and JWT verification.
-# TODO: RBAC, JWT
 
 
 @router.post(
@@ -30,9 +28,21 @@ async def create(
     return await service.create(data)
 
 
-@router.post(
+@router.patch(
+    "/update",
+    status_code=status.HTTP_202_ACCEPTED,
+    response_model=BusinessResponse,
+)
+async def update(
+    data: BusinessUpdateRequest,
+    service: BusinessService = Depends(get_business_service),
+) -> BusinessResponse | None:
+    return await service.update(data)
+
+
+@router.delete(
     "/delete",
-    status_code=status.HTTP_200_OK,
+    status_code=status.HTTP_204_NO_CONTENT,
     response_model=BusinessResponse,
 )
 async def delete(
@@ -42,32 +52,20 @@ async def delete(
     return await service.delete(data)
 
 
-@router.post(
-    "/get",
+@router.get(
+    "/{id}",
     status_code=status.HTTP_200_OK,
     response_model=BusinessResponse,
 )
 async def get(
-    data: BusinessGetByEmailRequest,
+    id: uuid.UUID,  # noqa
     service: BusinessService = Depends(get_business_service),
 ) -> BusinessResponse | None:
-    return await service.get(data)
+    return await service.get(id)
 
 
-@router.post(
-    "/get_by_id",
-    status_code=status.HTTP_200_OK,
-    response_model=BusinessResponse,
-)
-async def get_by_id(
-    data: BusinessGetByIDRequest,
-    service: BusinessService = Depends(get_business_service),
-) -> BusinessResponse | None:
-    return await service.get_by_id(data)
-
-
-@router.post(
-    "/get_all",
+@router.get(
+    "/",
     status_code=status.HTTP_200_OK,
     response_model=BusinessListResponse,
 )
@@ -75,3 +73,15 @@ async def get_all(
     service: BusinessService = Depends(get_business_service),
 ) -> BusinessListResponse:
     return await service.get_all()
+
+
+@router.post(
+    "/get_by_email",
+    status_code=status.HTTP_200_OK,
+    response_model=BusinessResponse,
+)
+async def get_by_email(
+    data: BusinessGetByEmailRequest,
+    service: BusinessService = Depends(get_business_service),
+) -> BusinessResponse | None:
+    return await service.get_by_email(data)

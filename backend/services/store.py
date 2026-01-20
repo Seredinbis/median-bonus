@@ -1,16 +1,20 @@
+from typing import TYPE_CHECKING
+
 from backend.domain.store import Store, StoreRepository, StoreStatus
 from backend.factories.repository import get_store_repository
 from backend.schemas.store import (
+    StoreAllByBusinessRequest,
     StoreCreateRequest,
     StoreDeleteRequest,
-    StoreGetByIDRequest,
-    StoreGetByNameRequest,
-    StoreListRequest,
+    StoreGetByNameInBusinessRequest,
     StoreListResponse,
     StoreResponse,
     StoreUpdateRequest,
 )
 from backend.utils.exception_handler import AlreadyExistsError, NotFoundError
+
+if TYPE_CHECKING:
+    import uuid
 
 
 class StoreService:
@@ -18,7 +22,7 @@ class StoreService:
         self.repository = repository
 
     async def create(self, data: StoreCreateRequest) -> StoreResponse:
-        existing = await self.repository.get(name=data.name, business_id=data.business_id)
+        existing = await self.repository.get_by_name_in_business(name=data.name, business_id=data.business_id)
         if existing:
             raise AlreadyExistsError("Store")
 
@@ -27,8 +31,20 @@ class StoreService:
 
         return StoreResponse.model_validate(result)
 
-    async def delete(self, data: StoreDeleteRequest) -> StoreResponse | None:
-        existing = await self.repository.get_by_id(data.id)
+    async def update(self, data: StoreUpdateRequest) -> StoreResponse:
+        existing = await self.repository.get(Store, data.id)
+        if not existing:
+            raise NotFoundError("Store")
+
+        if data.name:
+            existing.name = data.name
+
+        result = await self.repository.update(existing)
+
+        return StoreResponse.model_validate(result)
+
+    async def delete(self, data: StoreDeleteRequest) -> StoreResponse:
+        existing = await self.repository.get(Store, data.id)
         if not existing:
             raise NotFoundError("Store")
 
@@ -37,33 +53,29 @@ class StoreService:
 
         return StoreResponse.model_validate(result)
 
-    async def update(self, data: StoreUpdateRequest) -> StoreResponse | None:
-        existing = await self.repository.get(name=data.name, business_id=data.business_id)
-        if not existing:
-            raise NotFoundError("Store")
-
-        existing.status = data.status
-        existing.name = data.name
-        result = await self.repository.update(existing)
-
-        return StoreResponse.model_validate(result)
-
-    async def get(self, data: StoreGetByNameRequest) -> StoreResponse | None:
-        result = await self.repository.get(name=data.name, business_id=data.business_id)
+    async def get(self, id: "uuid.UUID") -> StoreResponse:  # noqa
+        result = await self.repository.get(Store, id)
         if not result:
             raise NotFoundError("Store")
 
         return StoreResponse.model_validate(result)
 
-    async def get_by_id(self, data: StoreGetByIDRequest) -> StoreResponse | None:
-        result = await self.repository.get_by_id(data.id)
+    async def get_all(self) -> StoreListResponse:
+        result = await self.repository.get_all(Store)
+        if not result:
+            raise NotFoundError("Store")
+
+        return StoreListResponse(storees=[StoreResponse.model_validate(store) for store in result])
+
+    async def get_by_name_in_business(self, data: StoreGetByNameInBusinessRequest) -> StoreResponse:
+        result = await self.repository.get_by_name_in_business(name=data.name, business_id=data.business_id)
         if not result:
             raise NotFoundError("Store")
 
         return StoreResponse.model_validate(result)
 
-    async def get_all(self, data: StoreListRequest) -> StoreListResponse:
-        result = await self.repository.get_all(business_id=data.business_id)
+    async def get_all_by_business(self, data: StoreAllByBusinessRequest) -> StoreListResponse:
+        result = await self.repository.get_all_by_business(business_id=data.business_id)
         if not result:
             raise NotFoundError("Store")
 

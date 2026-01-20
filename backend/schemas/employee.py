@@ -13,16 +13,19 @@ class EmployeeCreateRequest(BaseRequest):
     business_id: uuid.UUID
 
 
+class EmployeeUpdateRequest(BaseRequest):
+    id: uuid.UUID
+    email: EmailStr | None
+    name: str | None
+    password: str | None
+
+
 class EmployeeDeleteRequest(BaseRequest):
     id: uuid.UUID
 
 
 class EmployeeGetByEmailRequest(BaseRequest):
     email: EmailStr
-
-
-class EmployeeGetByIDRequest(BaseRequest):
-    id: uuid.UUID
 
 
 class EmployeeResponse(BaseModel):

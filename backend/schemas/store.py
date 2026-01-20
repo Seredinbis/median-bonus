@@ -16,22 +16,16 @@ class StoreDeleteRequest(BaseRequest):
 
 
 class StoreUpdateRequest(BaseRequest):
-    name: str
-    new_name: str
-    business_id: uuid.UUID
-    status: StoreStatus
-
-
-class StoreGetByNameRequest(BaseRequest):
-    name: str
-    business_id: uuid.UUID
-
-
-class StoreGetByIDRequest(BaseRequest):
     id: uuid.UUID
+    name: str
 
 
-class StoreListRequest(BaseRequest):
+class StoreGetByNameInBusinessRequest(BaseRequest):
+    name: str
+    business_id: uuid.UUID
+
+
+class StoreAllByBusinessRequest(BaseRequest):
     business_id: uuid.UUID
 
 

@@ -13,11 +13,13 @@ class BonusCreateRequest(BaseRequest):
     parameter: int
 
 
-class BonusDeleteRequest(BaseRequest):
+class BonusUpdateRequest(BaseRequest):
     id: uuid.UUID
+    product_id: uuid.UUID | None
+    parameter: int | None
 
 
-class BonusGetByIDRequest(BaseRequest):
+class BonusDeleteRequest(BaseRequest):
     id: uuid.UUID
 
 

@@ -1,21 +1,19 @@
+import uuid
+
 from fastapi import APIRouter, Depends, status
 
 from backend.factories.service import get_customer_service
 from backend.schemas.customer import (
     CustomerCreateRequest,
     CustomerDeleteRequest,
-    CustomerGetByIDRequest,
     CustomerGetByPhoneRequest,
     CustomerListResponse,
     CustomerResponse,
+    CustomerUpdateRequest,
 )
 from backend.services.customer import CustomerService
 
 router = APIRouter(prefix="/customer", tags=["customer"])
-
-
-# All APIs consist of POST methods due to the future need for RBAC and JWT verification.
-# TODO: RBAC, JWT
 
 
 @router.post(
@@ -30,9 +28,21 @@ async def create(
     return await service.create(data)
 
 
-@router.post(
+@router.patch(
+    "/update",
+    status_code=status.HTTP_202_ACCEPTED,
+    response_model=CustomerResponse,
+)
+async def update(
+    data: CustomerUpdateRequest,
+    service: CustomerService = Depends(get_customer_service),
+) -> CustomerResponse | None:
+    return await service.update(data)
+
+
+@router.delete(
     "/delete",
-    status_code=status.HTTP_200_OK,
+    status_code=status.HTTP_204_NO_CONTENT,
     response_model=CustomerResponse,
 )
 async def delete(
@@ -42,32 +52,20 @@ async def delete(
     return await service.delete(data)
 
 
-@router.post(
-    "/get",
+@router.get(
+    "/{id}",
     status_code=status.HTTP_200_OK,
     response_model=CustomerResponse,
 )
 async def get(
-    data: CustomerGetByPhoneRequest,
-    service: CustomerService = Depends(get_customer_service),
-) -> CustomerResponse:
-    return await service.get(data)
-
-
-@router.post(
-    "/get_by_id",
-    status_code=status.HTTP_200_OK,
-    response_model=CustomerResponse,
-)
-async def get_by_id(
-    data: CustomerGetByIDRequest,
+    id: uuid.UUID,  # noqa
     service: CustomerService = Depends(get_customer_service),
 ) -> CustomerResponse | None:
-    return await service.get_by_id(data)
+    return await service.get(id)
 
 
-@router.post(
-    "/get_all",
+@router.get(
+    "/",
     status_code=status.HTTP_200_OK,
     response_model=CustomerListResponse,
 )
@@ -75,3 +73,15 @@ async def get_all(
     service: CustomerService = Depends(get_customer_service),
 ) -> CustomerListResponse:
     return await service.get_all()
+
+
+@router.get(
+    "/get_by_phone",
+    status_code=status.HTTP_200_OK,
+    response_model=CustomerResponse,
+)
+async def get_by_phone(
+    data: CustomerGetByPhoneRequest,
+    service: CustomerService = Depends(get_customer_service),
+) -> CustomerResponse:
+    return await service.get_by_phone(data)

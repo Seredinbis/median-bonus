@@ -3,19 +3,13 @@ import uuid
 from sqlalchemy import UUID, Enum, ForeignKey, String
 from sqlalchemy.orm import Mapped, mapped_column
 
-from backend.database.base import TimestampMixin
+from backend.domain.base.entity import BaseModel
 
 from .enum import CustomerStatus
 
 
-class Customer(TimestampMixin):
+class Customer(BaseModel):
     __tablename__ = "customers"
-
-    id: Mapped[uuid.UUID] = mapped_column(
-        UUID(as_uuid=True),
-        primary_key=True,
-        default=uuid.uuid4,
-    )
 
     name: Mapped[str] = mapped_column(String(63))
 
@@ -28,7 +22,7 @@ class Customer(TimestampMixin):
     )
 
 
-class CustomerGift(TimestampMixin):
+class CustomerGift(BaseModel):
     __tablename__ = "customer_gift"
 
     customer_id: Mapped[uuid.UUID] = mapped_column(
@@ -46,7 +40,7 @@ class CustomerGift(TimestampMixin):
     count: Mapped[int] = mapped_column(default=0)
 
 
-class CustomerPoints(TimestampMixin):
+class CustomerPoints(BaseModel):
     __tablename__ = "customer_points"
 
     customer_id: Mapped[uuid.UUID] = mapped_column(

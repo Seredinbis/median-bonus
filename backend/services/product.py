@@ -1,16 +1,20 @@
+from typing import TYPE_CHECKING
+
 from backend.domain.product import Product, ProductRepository, ProductStatus
 from backend.factories.repository import get_product_repository
 from backend.schemas.product import (
+    ProductAllByStoreRequest,
     ProductCreateRequest,
     ProductDeleteRequest,
-    ProductGetByIDRequest,
-    ProductGetByNameRequest,
-    ProductListRequest,
+    ProductGetByNameInStoreRequest,
     ProductListResponse,
     ProductResponse,
     ProductUpdateRequest,
 )
 from backend.utils.exception_handler import AlreadyExistsError, NotFoundError
+
+if TYPE_CHECKING:
+    import uuid
 
 
 class ProductService:
@@ -18,7 +22,7 @@ class ProductService:
         self.repository = repository
 
     async def create(self, data: ProductCreateRequest) -> ProductResponse:
-        existing = await self.repository.get(name=data.name, store_id=data.store_id)
+        existing = await self.repository.get_by_name_in_store(name=data.name, store_id=data.store_id)
         if existing:
             raise AlreadyExistsError("Product")
 
@@ -32,8 +36,8 @@ class ProductService:
 
         return ProductResponse.model_validate(result)
 
-    async def delete(self, data: ProductDeleteRequest) -> ProductResponse | None:
-        existing = await self.repository.get_by_id(data.id)
+    async def delete(self, data: ProductDeleteRequest) -> ProductResponse:
+        existing = await self.repository.get(Product, data.id)
         if not existing:
             raise NotFoundError("Product")
 
@@ -42,36 +46,45 @@ class ProductService:
 
         return ProductResponse.model_validate(result)
 
-    async def update(self, data: ProductUpdateRequest) -> ProductResponse | None:
-        existing = await self.repository.get(name=data.name, store_id=data.store_id)
+    async def update(self, data: ProductUpdateRequest) -> ProductResponse:
+        existing = await self.repository.get(Product, data.id)
         if not existing:
             raise NotFoundError("Product")
 
-        existing.status = data.status
-        existing.name = data.name
-        existing.category = data.category
-        existing.price = data.price
+        if data.name:
+            existing.name = data.name
+        if data.category:
+            existing.category = data.category
+        if data.price:
+            existing.price = data.price
 
         result = await self.repository.update(existing)
 
         return ProductResponse.model_validate(result)
 
-    async def get(self, data: ProductGetByNameRequest) -> ProductResponse | None:
-        result = await self.repository.get(name=data.name, store_id=data.store_id)
+    async def get(self, id: "uuid.UUID") -> ProductResponse:  # noqa
+        result = await self.repository.get(Product, id)
         if not result:
             raise NotFoundError("Product")
 
         return ProductResponse.model_validate(result)
 
-    async def get_by_id(self, data: ProductGetByIDRequest) -> ProductResponse | None:
-        result = await self.repository.get_by_id(data.id)
+    async def get_all(self) -> ProductListResponse:
+        result = await self.repository.get_all(Product)
+        if not result:
+            raise NotFoundError("Product")
+
+        return ProductListResponse(productes=[ProductResponse.model_validate(product) for product in result])
+
+    async def get_by_name_in_store(self, data: ProductGetByNameInStoreRequest) -> ProductResponse:
+        result = await self.repository.get_by_name_in_store(name=data.name, store_id=data.store_id)
         if not result:
             raise NotFoundError("Product")
 
         return ProductResponse.model_validate(result)
 
-    async def get_all(self, data: ProductListRequest) -> ProductListResponse:
-        result = await self.repository.get_all(store_id=data.store_id)
+    async def get_all_by_store(self, data: ProductAllByStoreRequest) -> ProductListResponse:
+        result = await self.repository.get_all_by_store(store_id=data.store_id)
         if not result:
             raise NotFoundError("Product")
 

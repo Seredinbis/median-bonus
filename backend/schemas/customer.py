@@ -10,16 +10,18 @@ class CustomerCreateRequest(BaseRequest):
     name: str | None
 
 
+class CustomerUpdateRequest(BaseRequest):
+    id: uuid.UUID
+    phone: str | None
+    name: str | None
+
+
 class CustomerDeleteRequest(BaseRequest):
     id: uuid.UUID
 
 
 class CustomerGetByPhoneRequest(BaseRequest):
     phone: str
-
-
-class CustomerGetByIDRequest(BaseRequest):
-    id: uuid.UUID
 
 
 class CustomerResponse(BaseModel):

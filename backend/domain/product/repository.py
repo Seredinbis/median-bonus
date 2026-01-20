@@ -9,8 +9,8 @@ if TYPE_CHECKING:
     import uuid
 
 
-class ProductRepository(BaseRepository):
-    async def get(self, name: str, store_id: "uuid.UUID") -> Product | None:
+class ProductRepository(BaseRepository[Product]):
+    async def get_by_name_in_store(self, name: str, store_id: "uuid.UUID") -> Product | None:
         result = await self.session.execute(
             select(Product).where(
                 and_(
@@ -22,11 +22,7 @@ class ProductRepository(BaseRepository):
         )
         return result.scalar_one_or_none()
 
-    async def get_by_id(self, id: "uuid.UUID") -> Product | None:
-        result = await self.session.execute(select(Product).where(Product.id == id))
-        return result.scalar_one_or_none()
-
-    async def get_all(self, store_id: "uuid.UUID") -> list[Product | None]:
+    async def get_all_by_store(self, store_id: "uuid.UUID") -> list[Product]:
         result = await self.session.execute(
             select(Product).where(
                 and_(

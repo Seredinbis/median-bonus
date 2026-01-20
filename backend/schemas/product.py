@@ -14,29 +14,23 @@ class ProductCreateRequest(BaseRequest):
     price: float
 
 
+class ProductUpdateRequest(BaseRequest):
+    id: uuid.UUID
+    name: str | None
+    category: Category | None
+    price: float | None
+
+
 class ProductDeleteRequest(BaseRequest):
     id: uuid.UUID
 
 
-class ProductUpdateRequest(BaseRequest):
-    name: str
-    new_name: str
-    store_id: uuid.UUID
-    category: Category
-    status: ProductStatus
-    price: float
-
-
-class ProductGetByNameRequest(BaseRequest):
+class ProductGetByNameInStoreRequest(BaseRequest):
     name: str
     store_id: uuid.UUID
 
 
-class ProductGetByIDRequest(BaseRequest):
-    id: uuid.UUID
-
-
-class ProductListRequest(BaseRequest):
+class ProductAllByStoreRequest(BaseRequest):
     store_id: uuid.UUID
 
 
