@@ -2,6 +2,10 @@ from typing import TYPE_CHECKING
 
 from backend.domain.product import Product, ProductStatus
 from backend.factories.repository import get_product_repository
+from backend.schemas.product import (
+    ProductListResponse,
+    ProductResponse,
+)
 from backend.utils.exception_handler import AlreadyExistsError, NotFoundError
 
 if TYPE_CHECKING:
@@ -13,8 +17,6 @@ if TYPE_CHECKING:
         ProductCreateRequest,
         ProductDeleteRequest,
         ProductGetByNameInStoreRequest,
-        ProductListResponse,
-        ProductResponse,
         ProductUpdateRequest,
     )
 
@@ -38,15 +40,13 @@ class ProductService:
 
         return ProductResponse.model_validate(result)
 
-    async def delete(self, data: "ProductDeleteRequest") -> ProductResponse:
+    async def delete(self, data: "ProductDeleteRequest") -> None:
         existing = await self.repository.get(Product, data.id)
         if not existing:
             raise NotFoundError("Product")
 
         existing.status = ProductStatus.REMOVED
-        result = await self.repository.update(existing)
-
-        return ProductResponse.model_validate(result)
+        _ = await self.repository.update(existing)
 
     async def update(self, data: "ProductUpdateRequest") -> ProductResponse:
         existing = await self.repository.get(Product, data.id)

@@ -2,6 +2,10 @@ from typing import TYPE_CHECKING
 
 from backend.domain.store import Store, StoreStatus
 from backend.factories.repository import get_store_repository
+from backend.schemas.store import (
+    StoreListResponse,
+    StoreResponse,
+)
 from backend.utils.exception_handler import AlreadyExistsError, NotFoundError
 
 if TYPE_CHECKING:
@@ -13,8 +17,6 @@ if TYPE_CHECKING:
         StoreCreateRequest,
         StoreDeleteRequest,
         StoreGetByNameInBusinessRequest,
-        StoreListResponse,
-        StoreResponse,
         StoreUpdateRequest,
     )
 
@@ -45,15 +47,13 @@ class StoreService:
 
         return StoreResponse.model_validate(result)
 
-    async def delete(self, data: "StoreDeleteRequest") -> StoreResponse:
+    async def delete(self, data: "StoreDeleteRequest") -> None:
         existing = await self.repository.get(Store, data.id)
         if not existing:
             raise NotFoundError("Store")
 
         existing.status = StoreStatus.SUSPENDED
-        result = await self.repository.update(existing)
-
-        return StoreResponse.model_validate(result)
+        _ = await self.repository.update(existing)
 
     async def get(self, id: "uuid.UUID") -> StoreResponse:  # noqa
         result = await self.repository.get(Store, id)

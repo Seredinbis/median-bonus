@@ -2,6 +2,10 @@ from typing import TYPE_CHECKING
 
 from backend.domain.customer import Customer, CustomerStatus
 from backend.factories.repository import get_customer_repository
+from backend.schemas.customer import (
+    CustomerListResponse,
+    CustomerResponse,
+)
 from backend.utils.exception_handler import NotFoundError
 
 if TYPE_CHECKING:
@@ -12,8 +16,6 @@ if TYPE_CHECKING:
         CustomerCreateRequest,
         CustomerDeleteRequest,
         CustomerGetByPhoneRequest,
-        CustomerListResponse,
-        CustomerResponse,
         CustomerUpdateRequest,
     )
 
@@ -45,15 +47,13 @@ class CustomerService:
 
         return CustomerResponse.model_validate(result)
 
-    async def delete(self, data: "CustomerDeleteRequest") -> CustomerResponse:
+    async def delete(self, data: "CustomerDeleteRequest") -> None:
         existing = await self.repository.get(Customer, data.id)
         if not existing:
             raise NotFoundError("Customer")
 
         existing.status = CustomerStatus.SUSPENDED
-        result = await self.repository.update(existing)
-
-        return CustomerResponse.model_validate(result)
+        _ = await self.repository.update(existing)
 
     async def get(self, id: "uuid.UUID") -> CustomerResponse:  # noqa
         result = await self.repository.get(Customer, id)

@@ -26,6 +26,13 @@ class NotFoundError(HTTPError):
         self.detail = f"{name} not found"
 
 
+class DeleteError(HTTPError):
+    status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
+
+    def __init__(self, name: str = "Entity"):
+        self.detail = f"{name} still exists"
+
+
 def register_exception_handlers(app: FastAPI) -> None:
     @app.exception_handler(HTTPError)
     async def http_error_handler(

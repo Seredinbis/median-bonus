@@ -3,6 +3,10 @@ from typing import TYPE_CHECKING
 
 from backend.domain.bonus import Bonus
 from backend.factories.repository import get_bonus_repository
+from backend.schemas.bonus import (
+    BonusListResponse,
+    BonusResponse,
+)
 from backend.utils.exception_handler import NotFoundError
 
 if TYPE_CHECKING:
@@ -12,8 +16,6 @@ if TYPE_CHECKING:
     from backend.schemas.bonus import (
         BonusCreateRequest,
         BonusDeleteRequest,
-        BonusListResponse,
-        BonusResponse,
         BonusUpdateRequest,
     )
 
@@ -47,15 +49,13 @@ class BonusService:
 
         return BonusResponse.model_validate(result)
 
-    async def delete(self, data: "BonusDeleteRequest") -> BonusResponse:
+    async def delete(self, data: "BonusDeleteRequest") -> None:
         existing = await self.repository.get(Bonus, data.id)
         if not existing:
             raise NotFoundError("Bonus")
 
         existing.is_active = False
-        result = await self.repository.update(existing)
-
-        return BonusResponse.model_validate(result)
+        _ = await self.repository.update(existing)
 
     async def get(self, id: "uuid.UUID") -> BonusResponse:  # noqa
         result = await self.repository.get(Bonus, id)

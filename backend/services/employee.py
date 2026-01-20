@@ -2,6 +2,10 @@ from typing import TYPE_CHECKING
 
 from backend.domain.employee import Employee, EmployeeStatus
 from backend.factories.repository import get_employee_repository
+from backend.schemas.employee import (
+    EmployeeListResponse,
+    EmployeeResponse,
+)
 from backend.security import hash_password
 from backend.utils.exception_handler import AlreadyExistsError, NotFoundError
 
@@ -13,8 +17,6 @@ if TYPE_CHECKING:
         EmployeeCreateRequest,
         EmployeeDeleteRequest,
         EmployeeGetByEmailRequest,
-        EmployeeListResponse,
-        EmployeeResponse,
         EmployeeUpdateRequest,
     )
 
@@ -54,15 +56,13 @@ class EmployeeService:
 
         return EmployeeResponse.model_validate(result)
 
-    async def delete(self, data: "EmployeeDeleteRequest") -> EmployeeResponse:
+    async def delete(self, data: "EmployeeDeleteRequest") -> None:
         existing = await self.repository.get(Employee, data.id)
         if not existing:
             raise NotFoundError("Employee")
 
         existing.status = EmployeeStatus.SUSPENDED
-        result = await self.repository.update(existing)
-
-        return EmployeeResponse.model_validate(result)
+        _ = await self.repository.update(existing)
 
     async def get(self, id: "uuid.UUID") -> EmployeeResponse:  # noqa
         result = await self.repository.get(Employee, id)

@@ -2,6 +2,10 @@ from typing import TYPE_CHECKING
 
 from backend.domain.business import Business, BusinessStatus
 from backend.factories.repository import get_business_repository
+from backend.schemas.business import (
+    BusinessListResponse,
+    BusinessResponse,
+)
 from backend.security import hash_password
 from backend.utils.exception_handler import AlreadyExistsError, NotFoundError
 
@@ -13,8 +17,6 @@ if TYPE_CHECKING:
         BusinessCreateRequest,
         BusinessDeleteRequest,
         BusinessGetByEmailRequest,
-        BusinessListResponse,
-        BusinessResponse,
         BusinessUpdateRequest,
     )
 
@@ -53,15 +55,13 @@ class BusinessService:
 
         return BusinessResponse.model_validate(result)
 
-    async def delete(self, data: "BusinessDeleteRequest") -> BusinessResponse:
+    async def delete(self, data: "BusinessDeleteRequest") -> None:
         existing = await self.repository.get(Business, data.id)
         if not existing:
             raise NotFoundError("Business")
 
         existing.status = BusinessStatus.SUSPENDED
-        result = await self.repository.update(existing)
-
-        return BusinessResponse.model_validate(result)
+        _ = await self.repository.update(existing)
 
     async def get(self, id: "uuid.UUID") -> BusinessResponse:  # noqa
         result = await self.repository.get(Business, id)

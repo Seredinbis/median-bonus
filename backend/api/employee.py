@@ -43,13 +43,13 @@ async def update(
 @router.delete(
     "/delete",
     status_code=status.HTTP_204_NO_CONTENT,
-    response_model=EmployeeResponse,
 )
 async def delete(
     data: EmployeeDeleteRequest,
     service: EmployeeService = Depends(get_employee_service),
-) -> EmployeeResponse | None:
-    return await service.delete(data)
+) -> None:
+    await service.delete(data)
+    return
 
 
 @router.get(
