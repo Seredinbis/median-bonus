@@ -1,28 +1,28 @@
 from typing import TYPE_CHECKING
 
-from backend.domain.customer import CustomerStatus
-from backend.domain.customer.entity import Customer
-from backend.domain.customer.repository import CustomerRepository
+from backend.domain.customer import Customer, CustomerStatus
 from backend.factories.repository import get_customer_repository
-from backend.schemas.customer import (
-    CustomerCreateRequest,
-    CustomerDeleteRequest,
-    CustomerGetByPhoneRequest,
-    CustomerListResponse,
-    CustomerResponse,
-    CustomerUpdateRequest,
-)
 from backend.utils.exception_handler import NotFoundError
 
 if TYPE_CHECKING:
     import uuid
 
+    from backend.domain.customer import CustomerRepository
+    from backend.schemas.customer import (
+        CustomerCreateRequest,
+        CustomerDeleteRequest,
+        CustomerGetByPhoneRequest,
+        CustomerListResponse,
+        CustomerResponse,
+        CustomerUpdateRequest,
+    )
+
 
 class CustomerService:
-    def __init__(self, repository: CustomerRepository = get_customer_repository()) -> None:
+    def __init__(self, repository: "CustomerRepository" = get_customer_repository()) -> None:
         self.repository = repository
 
-    async def create(self, data: CustomerCreateRequest) -> CustomerResponse:
+    async def create(self, data: "CustomerCreateRequest") -> CustomerResponse:
         existing = await self.repository.get_by_phone(data.phone)
         if existing:
             return CustomerResponse.model_validate(existing)
@@ -31,7 +31,7 @@ class CustomerService:
         result = await self.repository.create(customer)
         return CustomerResponse.model_validate(result)
 
-    async def update(self, data: CustomerUpdateRequest) -> CustomerResponse:
+    async def update(self, data: "CustomerUpdateRequest") -> CustomerResponse:
         existing = await self.repository.get(Customer, data.id)
         if not existing:
             raise NotFoundError("Customer")
@@ -45,7 +45,7 @@ class CustomerService:
 
         return CustomerResponse.model_validate(result)
 
-    async def delete(self, data: CustomerDeleteRequest) -> CustomerResponse:
+    async def delete(self, data: "CustomerDeleteRequest") -> CustomerResponse:
         existing = await self.repository.get(Customer, data.id)
         if not existing:
             raise NotFoundError("Customer")
@@ -69,7 +69,7 @@ class CustomerService:
 
         return CustomerListResponse(customers=[CustomerResponse.model_validate(customer) for customer in result])
 
-    async def get_by_phone(self, data: CustomerGetByPhoneRequest) -> CustomerResponse:
+    async def get_by_phone(self, data: "CustomerGetByPhoneRequest") -> CustomerResponse:
         result = await self.repository.get_by_phone(data.phone)
         if not result:
             raise NotFoundError("Customer")

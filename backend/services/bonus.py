@@ -1,26 +1,28 @@
 import uuid
 from typing import TYPE_CHECKING
 
-from backend.domain.bonus import Bonus, BonusRepository
+from backend.domain.bonus import Bonus
 from backend.factories.repository import get_bonus_repository
-from backend.schemas.bonus import (
-    BonusCreateRequest,
-    BonusDeleteRequest,
-    BonusListResponse,
-    BonusResponse,
-    BonusUpdateRequest,
-)
 from backend.utils.exception_handler import NotFoundError
 
 if TYPE_CHECKING:
     import uuid
 
+    from backend.domain.bonus import BonusRepository
+    from backend.schemas.bonus import (
+        BonusCreateRequest,
+        BonusDeleteRequest,
+        BonusListResponse,
+        BonusResponse,
+        BonusUpdateRequest,
+    )
+
 
 class BonusService:
-    def __init__(self, repository: BonusRepository = get_bonus_repository()):
+    def __init__(self, repository: "BonusRepository" = get_bonus_repository()):
         self.repository = repository
 
-    async def create(self, data: BonusCreateRequest) -> BonusResponse:
+    async def create(self, data: "BonusCreateRequest") -> BonusResponse:
         bonus = Bonus(
             type=data.type,
             store_id=data.store_id,
@@ -31,7 +33,7 @@ class BonusService:
 
         return BonusResponse.model_validate(result)
 
-    async def update(self, data: BonusUpdateRequest) -> BonusResponse:
+    async def update(self, data: "BonusUpdateRequest") -> BonusResponse:
         existing = await self.repository.get(Bonus, data.id)
         if not existing:
             raise NotFoundError("Store")
@@ -45,7 +47,7 @@ class BonusService:
 
         return BonusResponse.model_validate(result)
 
-    async def delete(self, data: BonusDeleteRequest) -> BonusResponse:
+    async def delete(self, data: "BonusDeleteRequest") -> BonusResponse:
         existing = await self.repository.get(Bonus, data.id)
         if not existing:
             raise NotFoundError("Bonus")
@@ -62,7 +64,7 @@ class BonusService:
 
         return BonusResponse.model_validate(result)
 
-    async def get_all(self) -> BonusListResponse:
+    async def get_all(self) -> "BonusListResponse":
         result = await self.repository.get_all(Bonus)
         if not result:
             raise NotFoundError("Bonuses")

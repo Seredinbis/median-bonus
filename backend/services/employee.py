@@ -1,27 +1,29 @@
 from typing import TYPE_CHECKING
 
-from backend.domain.employee import Employee, EmployeeRepository, EmployeeStatus
+from backend.domain.employee import Employee, EmployeeStatus
 from backend.factories.repository import get_employee_repository
-from backend.schemas.employee import (
-    EmployeeCreateRequest,
-    EmployeeDeleteRequest,
-    EmployeeGetByEmailRequest,
-    EmployeeListResponse,
-    EmployeeResponse,
-    EmployeeUpdateRequest,
-)
 from backend.security import hash_password
 from backend.utils.exception_handler import AlreadyExistsError, NotFoundError
 
 if TYPE_CHECKING:
     import uuid
 
+    from backend.domain.employee import EmployeeRepository
+    from backend.schemas.employee import (
+        EmployeeCreateRequest,
+        EmployeeDeleteRequest,
+        EmployeeGetByEmailRequest,
+        EmployeeListResponse,
+        EmployeeResponse,
+        EmployeeUpdateRequest,
+    )
+
 
 class EmployeeService:
-    def __init__(self, repository: EmployeeRepository = get_employee_repository()):
+    def __init__(self, repository: "EmployeeRepository" = get_employee_repository()):
         self.repository = repository
 
-    async def create(self, data: EmployeeCreateRequest) -> EmployeeResponse:
+    async def create(self, data: "EmployeeCreateRequest") -> EmployeeResponse:
         existing = await self.repository.get_by_email(str(data.email))
         if existing:
             raise AlreadyExistsError("Email")
@@ -36,7 +38,7 @@ class EmployeeService:
 
         return EmployeeResponse.model_validate(result)
 
-    async def update(self, data: EmployeeUpdateRequest) -> EmployeeResponse:
+    async def update(self, data: "EmployeeUpdateRequest") -> EmployeeResponse:
         existing = await self.repository.get(Employee, data.id)
         if not existing:
             raise NotFoundError("Employee")
@@ -52,7 +54,7 @@ class EmployeeService:
 
         return EmployeeResponse.model_validate(result)
 
-    async def delete(self, data: EmployeeDeleteRequest) -> EmployeeResponse:
+    async def delete(self, data: "EmployeeDeleteRequest") -> EmployeeResponse:
         existing = await self.repository.get(Employee, data.id)
         if not existing:
             raise NotFoundError("Employee")
@@ -76,7 +78,7 @@ class EmployeeService:
 
         return EmployeeListResponse(employeees=[EmployeeResponse.model_validate(employee) for employee in result])
 
-    async def get_by_email(self, data: EmployeeGetByEmailRequest) -> EmployeeResponse:
+    async def get_by_email(self, data: "EmployeeGetByEmailRequest") -> EmployeeResponse:
         result = await self.repository.get_by_email(str(data.email))
         if not result:
             raise NotFoundError("Employee")
