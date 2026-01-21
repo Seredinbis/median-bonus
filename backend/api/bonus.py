@@ -2,15 +2,16 @@ import uuid
 
 from fastapi import APIRouter, Depends, status
 
-from backend.factories.service import get_bonus_service
-from backend.schemas.bonus import (
+from backend.factoriy.service import get_bonus_service
+from backend.schema.bonus import (
     BonusCreateRequest,
     BonusDeleteRequest,
+    BonusGetAllByStore,
     BonusListResponse,
     BonusResponse,
     BonusUpdateRequest,
 )
-from backend.services.bonus import BonusService
+from backend.service.bonus import BonusService
 
 router = APIRouter(prefix="/bonus", tags=["bonus"])
 
@@ -72,3 +73,15 @@ async def get_all(
     service: BonusService = Depends(get_bonus_service),
 ) -> BonusListResponse:
     return await service.get_all()
+
+
+@router.post(
+    "/get_all_by_store",
+    status_code=status.HTTP_200_OK,
+    response_model=BonusListResponse,
+)
+async def get_all_by_store(
+    data: BonusGetAllByStore,
+    service: BonusService = Depends(get_bonus_service),
+) -> BonusListResponse:
+    return await service.get_all_by_store(data)

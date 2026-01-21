@@ -2,8 +2,8 @@ import uuid
 
 from fastapi import APIRouter, Depends, status
 
-from backend.factories.service import get_store_service
-from backend.schemas.store import (
+from backend.factoriy.service import get_store_service
+from backend.schema.store import (
     StoreAllByBusinessRequest,
     StoreCreateRequest,
     StoreDeleteRequest,
@@ -12,7 +12,7 @@ from backend.schemas.store import (
     StoreResponse,
     StoreUpdateRequest,
 )
-from backend.services.store import StoreService
+from backend.service.store import StoreService
 
 router = APIRouter(prefix="/store", tags=["store"])
 

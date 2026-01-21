@@ -2,8 +2,8 @@ import uuid
 
 from fastapi import APIRouter, Depends, status
 
-from backend.factories.service import get_customer_service
-from backend.schemas.customer import (
+from backend.factoriy.service import get_customer_service
+from backend.schema.customer import (
     CustomerCreateRequest,
     CustomerDeleteRequest,
     CustomerGetByPhoneRequest,
@@ -11,7 +11,7 @@ from backend.schemas.customer import (
     CustomerResponse,
     CustomerUpdateRequest,
 )
-from backend.services.customer import CustomerService
+from backend.service.customer import CustomerService
 
 router = APIRouter(prefix="/customer", tags=["customer"])
 

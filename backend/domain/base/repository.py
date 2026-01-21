@@ -3,7 +3,7 @@ from typing import TYPE_CHECKING
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from backend.domain.base.entity import Entity
+from . import Entity
 
 if TYPE_CHECKING:
     import uuid

@@ -3,7 +3,7 @@ from typing import TYPE_CHECKING
 
 from fastapi import Depends
 
-from backend.factories.repository import (
+from backend.factoriy.repository import (
     get_bonus_repository,
     get_business_repository,
     get_customer_repository,
@@ -11,12 +11,13 @@ from backend.factories.repository import (
     get_product_repository,
     get_store_repository,
 )
-from backend.services.bonus import BonusService
-from backend.services.business import BusinessService
-from backend.services.customer import CustomerService
-from backend.services.employee import EmployeeService
-from backend.services.product import ProductService
-from backend.services.store import StoreService
+from backend.service.bonus import BonusService
+from backend.service.business import BusinessService
+from backend.service.customer import CustomerService
+from backend.service.employee import EmployeeService
+from backend.service.order import OrderService
+from backend.service.product import ProductService
+from backend.service.store import StoreService
 
 if TYPE_CHECKING:
     from backend.domain.bonus import BonusRepository
@@ -67,3 +68,8 @@ def get_bonus_service(
     repository: "BonusRepository" = Depends(get_bonus_repository),
 ) -> BonusService:
     return BonusService(repository)
+
+
+@lru_cache
+def get_order_service() -> OrderService:
+    return OrderService()

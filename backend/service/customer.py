@@ -1,18 +1,18 @@
 from typing import TYPE_CHECKING
 
 from backend.domain.customer import Customer, CustomerStatus
-from backend.factories.repository import get_customer_repository
-from backend.schemas.customer import (
+from backend.factoriy.repository import get_customer_repository
+from backend.schema.customer import (
     CustomerListResponse,
     CustomerResponse,
 )
-from backend.utils.exception_handler import NotFoundError
+from backend.util.exception_handler import NotFoundError
 
 if TYPE_CHECKING:
     import uuid
 
     from backend.domain.customer import CustomerRepository
-    from backend.schemas.customer import (
+    from backend.schema.customer import (
         CustomerCreateRequest,
         CustomerDeleteRequest,
         CustomerGetByPhoneRequest,

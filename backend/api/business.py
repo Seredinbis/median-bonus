@@ -2,8 +2,8 @@ import uuid
 
 from fastapi import APIRouter, Depends, status
 
-from backend.factories.service import get_business_service
-from backend.schemas.business import (
+from backend.factoriy.service import get_business_service
+from backend.schema.business import (
     BusinessCreateRequest,
     BusinessDeleteRequest,
     BusinessGetByEmailRequest,
@@ -11,7 +11,7 @@ from backend.schemas.business import (
     BusinessResponse,
     BusinessUpdateRequest,
 )
-from backend.services.business import BusinessService
+from backend.service.business import BusinessService
 
 router = APIRouter(prefix="/business", tags=["business"])
 

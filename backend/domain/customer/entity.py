@@ -1,9 +1,7 @@
-import uuid
-
-from sqlalchemy import UUID, Enum, ForeignKey, String
+from sqlalchemy import Enum, String
 from sqlalchemy.orm import Mapped, mapped_column
 
-from backend.domain.base import Base, Entity
+from backend.domain.base import Entity
 
 from .enum import CustomerStatus
 
@@ -20,21 +18,3 @@ class Customer(Entity):
         nullable=False,
         default=CustomerStatus.ACTIVATED,
     )
-
-
-class CustomerBonus(Base):
-    __tablename__ = "customer_bonus"
-
-    customer_id: Mapped[uuid.UUID] = mapped_column(
-        UUID(as_uuid=True),
-        ForeignKey("customers.id"),
-        primary_key=True,
-    )
-
-    bonus_id: Mapped[uuid.UUID] = mapped_column(
-        UUID(as_uuid=True),
-        ForeignKey("bonuses.id"),
-        primary_key=True,
-    )
-
-    value: Mapped[int] = mapped_column(default=0)

@@ -22,10 +22,10 @@ class Bonus(Entity):
         nullable=False,
     )
 
-    product_id: Mapped[uuid.UUID | None] = mapped_column(
+    product_id: Mapped[uuid.UUID] = mapped_column(
         UUID(as_uuid=True),
         ForeignKey("products.id"),
-        nullable=True,
+        nullable=False,
     )
 
     value: Mapped[int] = mapped_column(

@@ -3,7 +3,7 @@ import uuid
 from pydantic import BaseModel, EmailStr
 
 from backend.domain.employee import EmployeeStatus
-from backend.schemas.base import BaseRequest
+from backend.schema.base import BaseRequest
 
 
 class EmployeeCreateRequest(BaseRequest):

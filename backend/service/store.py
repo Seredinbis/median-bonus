@@ -1,18 +1,18 @@
 from typing import TYPE_CHECKING
 
 from backend.domain.store import Store, StoreStatus
-from backend.factories.repository import get_store_repository
-from backend.schemas.store import (
+from backend.factoriy.repository import get_store_repository
+from backend.schema.store import (
     StoreListResponse,
     StoreResponse,
 )
-from backend.utils.exception_handler import AlreadyExistsError, NotFoundError
+from backend.util.exception_handler import AlreadyExistsError, NotFoundError
 
 if TYPE_CHECKING:
     import uuid
 
     from backend.domain.store import StoreRepository
-    from backend.schemas.store import (
+    from backend.schema.store import (
         StoreAllByBusinessRequest,
         StoreCreateRequest,
         StoreDeleteRequest,

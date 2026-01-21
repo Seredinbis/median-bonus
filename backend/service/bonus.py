@@ -2,18 +2,15 @@ import uuid
 from typing import TYPE_CHECKING
 
 from backend.domain.bonus import Bonus
-from backend.factories.repository import get_bonus_repository
-from backend.schemas.bonus import (
-    BonusListResponse,
-    BonusResponse,
-)
-from backend.utils.exception_handler import NotFoundError
+from backend.factoriy.repository import get_bonus_repository
+from backend.schema.bonus import BonusGetAllByStore, BonusListResponse, BonusResponse
+from backend.util.exception_handler import NotFoundError
 
 if TYPE_CHECKING:
     import uuid
 
     from backend.domain.bonus import BonusRepository
-    from backend.schemas.bonus import (
+    from backend.schema.bonus import (
         BonusCreateRequest,
         BonusDeleteRequest,
         BonusUpdateRequest,
@@ -66,6 +63,13 @@ class BonusService:
 
     async def get_all(self) -> "BonusListResponse":
         result = await self.repository.get_all(Bonus)
+        if not result:
+            raise NotFoundError("Bonuses")
+
+        return BonusListResponse(bonuses=[BonusResponse.model_validate(bonus) for bonus in result])
+
+    async def get_all_by_store(self, data: "BonusGetAllByStore") -> "BonusListResponse":
+        result = await self.repository.get_all_by_store(data.store_id)
         if not result:
             raise NotFoundError("Bonuses")
 

@@ -2,7 +2,7 @@ import uuid
 
 from pydantic import BaseModel
 
-from backend.schemas.base import BaseRequest
+from backend.schema.base import BaseRequest
 
 
 class CustomerCreateRequest(BaseRequest):

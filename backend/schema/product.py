@@ -4,7 +4,7 @@ from pydantic import BaseModel
 
 from backend.domain.product import ProductStatus
 from backend.domain.product.enum import Category
-from backend.schemas.base import BaseRequest
+from backend.schema.base import BaseRequest
 
 
 class ProductCreateRequest(BaseRequest):

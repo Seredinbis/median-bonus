@@ -1,19 +1,19 @@
 from typing import TYPE_CHECKING
 
 from backend.domain.employee import Employee, EmployeeStatus
-from backend.factories.repository import get_employee_repository
-from backend.schemas.employee import (
+from backend.factoriy.repository import get_employee_repository
+from backend.schema.employee import (
     EmployeeListResponse,
     EmployeeResponse,
 )
 from backend.security import hash_password
-from backend.utils.exception_handler import AlreadyExistsError, NotFoundError
+from backend.util.exception_handler import AlreadyExistsError, NotFoundError
 
 if TYPE_CHECKING:
     import uuid
 
     from backend.domain.employee import EmployeeRepository
-    from backend.schemas.employee import (
+    from backend.schema.employee import (
         EmployeeCreateRequest,
         EmployeeDeleteRequest,
         EmployeeGetByEmailRequest,

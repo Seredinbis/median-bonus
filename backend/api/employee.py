@@ -2,8 +2,8 @@ import uuid
 
 from fastapi import APIRouter, Depends, status
 
-from backend.factories.service import get_employee_service
-from backend.schemas.employee import (
+from backend.factoriy.service import get_employee_service
+from backend.schema.employee import (
     EmployeeCreateRequest,
     EmployeeDeleteRequest,
     EmployeeGetByEmailRequest,
@@ -11,7 +11,7 @@ from backend.schemas.employee import (
     EmployeeResponse,
     EmployeeUpdateRequest,
 )
-from backend.services.employee import EmployeeService
+from backend.service.employee import EmployeeService
 
 router = APIRouter(prefix="/employee", tags=["employee"])
 

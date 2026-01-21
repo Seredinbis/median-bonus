@@ -3,24 +3,28 @@ import uuid
 from pydantic import BaseModel
 
 from backend.domain.bonus import BonusType
-from backend.schemas.base import BaseRequest
+from backend.schema.base import BaseRequest
 
 
 class BonusCreateRequest(BaseRequest):
     type: BonusType
     store_id: uuid.UUID
-    product_id: uuid.UUID | None
+    product_id: uuid.UUID
     value: int
 
 
 class BonusUpdateRequest(BaseRequest):
     id: uuid.UUID
-    product_id: uuid.UUID | None
+    product_id: uuid.UUID
     value: int | None
 
 
 class BonusDeleteRequest(BaseRequest):
     id: uuid.UUID
+
+
+class BonusGetAllByStore(BaseRequest):
+    store_id: uuid.UUID
 
 
 class BonusResponse(BaseModel):

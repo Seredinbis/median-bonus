@@ -1,19 +1,19 @@
 from typing import TYPE_CHECKING
 
 from backend.domain.business import Business, BusinessStatus
-from backend.factories.repository import get_business_repository
-from backend.schemas.business import (
+from backend.factoriy.repository import get_business_repository
+from backend.schema.business import (
     BusinessListResponse,
     BusinessResponse,
 )
 from backend.security import hash_password
-from backend.utils.exception_handler import AlreadyExistsError, NotFoundError
+from backend.util.exception_handler import AlreadyExistsError, NotFoundError
 
 if TYPE_CHECKING:
     import uuid
 
     from backend.domain.business import BusinessRepository
-    from backend.schemas.business import (
+    from backend.schema.business import (
         BusinessCreateRequest,
         BusinessDeleteRequest,
         BusinessGetByEmailRequest,

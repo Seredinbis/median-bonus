@@ -3,7 +3,7 @@ import uuid
 from pydantic import BaseModel
 
 from backend.domain.store import StoreStatus
-from backend.schemas.base import BaseRequest
+from backend.schema.base import BaseRequest
 
 
 class StoreCreateRequest(BaseRequest):

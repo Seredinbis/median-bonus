@@ -9,7 +9,10 @@ from backend.domain.bonus import Bonus, BonusType
 from backend.domain.business import Business, BusinessStatus
 
 # noinspection PyUnresolvedReferences
-from backend.domain.customer import Customer, CustomerBonus
+from backend.domain.customer import Customer, CustomerStatus
+
+# noinspection PyUnresolvedReferences
+from backend.domain.order import Order, OrderStatus
 
 # noinspection PyUnresolvedReferences
 from backend.domain.product import Product, ProductStatus

@@ -7,7 +7,9 @@ from backend.database.session import get_db
 from backend.domain.bonus import BonusRepository
 from backend.domain.business import BusinessRepository
 from backend.domain.customer import CustomerRepository
+from backend.domain.customer_bonus import CustomerBonusRepository
 from backend.domain.employee import EmployeeRepository
+from backend.domain.order import OrderProductRepository, OrderRepository
 from backend.domain.product import ProductRepository
 from backend.domain.store import StoreRepository
 
@@ -55,3 +57,24 @@ def get_bonus_repository(
     session: "AsyncSession" = Depends(get_db),
 ) -> BonusRepository:
     return BonusRepository(session=session)
+
+
+@lru_cache
+def get_customer_bonus_repository(
+    session: "AsyncSession" = Depends(get_db),
+) -> CustomerBonusRepository:
+    return CustomerBonusRepository(session=session)
+
+
+@lru_cache
+def get_order_repository(
+    session: "AsyncSession" = Depends(get_db),
+) -> OrderRepository:
+    return OrderRepository(session=session)
+
+
+@lru_cache
+def get_order_product_repository(
+    session: "AsyncSession" = Depends(get_db),
+) -> OrderProductRepository:
+    return OrderProductRepository(session=session)
