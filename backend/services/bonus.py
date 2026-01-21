@@ -29,7 +29,7 @@ class BonusService:
             type=data.type,
             store_id=data.store_id,
             product_id=data.product_id,
-            parameter=data.parameter,
+            value=data.value,
         )
         result = await self.repository.create(bonus)
 
@@ -40,8 +40,8 @@ class BonusService:
         if not existing:
             raise NotFoundError("Store")
 
-        if data.parameter:
-            existing.value = data.parameter
+        if data.value:
+            existing.value = data.value
         if data.product_id:
             existing.product_id = data.product_id
 

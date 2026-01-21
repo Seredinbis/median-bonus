@@ -9,7 +9,7 @@ from .enum import BonusType
 
 
 class Bonus(Entity):
-    __tablename__ = "bonus_programs"
+    __tablename__ = "bonuses"
 
     type: Mapped[BonusType] = mapped_column(
         Enum(BonusType, name="bonus_type"),

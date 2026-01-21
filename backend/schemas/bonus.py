@@ -10,13 +10,13 @@ class BonusCreateRequest(BaseRequest):
     type: BonusType
     store_id: uuid.UUID
     product_id: uuid.UUID | None
-    parameter: int
+    value: int
 
 
 class BonusUpdateRequest(BaseRequest):
     id: uuid.UUID
     product_id: uuid.UUID | None
-    parameter: int | None
+    value: int | None
 
 
 class BonusDeleteRequest(BaseRequest):
@@ -28,7 +28,7 @@ class BonusResponse(BaseModel):
     type: BonusType
     store_id: uuid.UUID
     producte_id: uuid.UUID | None
-    parameter: int
+    value: int
     is_active: bool
 
 
