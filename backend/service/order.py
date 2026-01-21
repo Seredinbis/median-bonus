@@ -41,9 +41,11 @@ class OrderService:
 
     # Надо будет как-то это все обернуть в транзакцию
     async def create(self, data: "OrderRequest") -> OrderResponse:
+        # Пользователь зарегистрирован?
         customer_exists = (
             await self.customer_repository.get_by_phone(data.customer_phone) if data.customer_phone else None
         )
+        # Если нет, но дал номер -- регистрируем
         customer = (
             await self.customer_repository.create(Customer(phone=data.customer_phone))
             if not customer_exists and data.customer_phone
