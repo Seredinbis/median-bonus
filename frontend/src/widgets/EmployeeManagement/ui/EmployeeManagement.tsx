@@ -1,8 +1,8 @@
 import { useEmployees } from '../model/useEmployees';
 import { EmployeeModal } from './EmployeeModal';
 
-export const EmployeeManagement = () => {
-  const { employees, isModalOpen, setIsModalOpen, addEmployee, removeEmployee, isLoading } = useEmployees();
+export const EmployeeManagement = ({ title, controller }: { title: string, controller: any }) => {
+  const { employees, isModalOpen, setIsModalOpen, addEmployee, removeEmployee, isLoading } = controller;
 
   return (
     <div className="w-full">

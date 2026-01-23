@@ -1,19 +1,26 @@
 import { useState } from 'react';
 import { AdminLayout } from '@/widgets/AdminLayout/ui/AdminLayout';
 import { EmployeeManagement } from '@/widgets/EmployeeManagement/ui/EmployeeManagement';
+import { useEmployees } from '@/widgets/EmployeeManagement/model/useEmployees';
+import { CustomerManagement } from '@/widgets/CustomerManagement/ui/CustomerManagement';
+import { useCustomers } from '@/widgets/CustomerManagement/model/useCustomers';
 import { StatsCard } from '@/shared/ui/StatsCard/StatsCard';
 import type { UserRole } from '@/shared/types/user';
 
 export default function AdminDashboard() {
   const [activeTab, setActiveTab] = useState('stats');
   const [role] = useState<UserRole>('admin');
+  const employeeController = useEmployees();
+  const customerController = useCustomers();
 
   // Логика быстрого создания
   const handleQuickCreate = (tabId: string) => {
     setActiveTab(tabId);
-    console.log('Open modal for:', tabId);
+    // Если кликаем + на пользователях или сотрудниках — открываем модалку
+    if (tabId === 'stats' || tabId === 'employees') {
+      employeeController.setIsModalOpen(true);
+    }
   };
-
   return (
     <AdminLayout
       activeTab={activeTab}
@@ -28,7 +35,10 @@ export default function AdminDashboard() {
             <StatsCard title="Выдано бонусов" value="450,000" color="orange" />
             <StatsCard title="Активные сегодня" value="89" color="green" />
           </div>
-          <EmployeeManagement title="Список пользователей" />
+           <CustomerManagement
+            controller={customerController}
+            title="Управление клиентами"
+          />
         </section>
       )}
 
@@ -41,7 +51,10 @@ export default function AdminDashboard() {
 
       {activeTab === 'employees' && (
         <div className="animate-in slide-in-from-bottom-2 duration-400">
-          <EmployeeManagement title="Управление сотрудниками" />
+           <EmployeeManagement
+            controller={employeeController}
+            title="Управление сотрудниками"
+          />
         </div>
       )}
     </AdminLayout>
