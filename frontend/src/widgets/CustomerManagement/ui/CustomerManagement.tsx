@@ -10,6 +10,8 @@ export const CustomerManagement = ({ title, controller }: Props) => {
   const {
     customers,
     isModalOpen,
+    openCreateModal,
+     closeModal,
     setIsModalOpen,
     isLoading,
     handleSave,
@@ -45,13 +47,10 @@ export const CustomerManagement = ({ title, controller }: Props) => {
           </div>
 
           <button
-            onClick={() => {
-              controller.setCurrentCustomer(null);
-              setIsModalOpen(true);
-            }}
+            onClick={openCreateModal}
             className="bg-orange-500 hover:bg-orange-600 px-5 py-2 rounded-xl font-medium transition-all shadow-lg shadow-orange-500/10"
           >
-            + Добавить
+            + Добавить пользователя
           </button>
         </div>
       </div>

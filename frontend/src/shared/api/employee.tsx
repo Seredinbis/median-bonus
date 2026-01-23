@@ -1,17 +1,8 @@
 import type { Employee, CreateEmployeeDto, GetAllEmployeesResponse } from '@/shared/types/employee';
 
-// Используем константу, которую собрал Vite в конфиге
 const API_URL = `${__API_URL__}/employee`;
 
-
 export const employeeApi = {
-  getAll: (businessId: string): Promise<GetAllEmployeesResponse> =>
-    fetch(`${API_URL}/get_all`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ business_id: businessId })
-    }).then(r => r.json()),
-
   create: (data: CreateEmployeeDto) =>
     fetch(`${API_URL}/create`, {
       method: 'POST',
@@ -19,10 +10,42 @@ export const employeeApi = {
       body: JSON.stringify(data),
     }),
 
+  update: (data: Partial<Employee>) =>
+    fetch(`${API_URL}/update`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data),
+    }),
+
   delete: (id: string) =>
     fetch(`${API_URL}/delete`, {
-      method: 'POST',
+      method: 'DELETE',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ id }),
+    }),
+
+  getById: (id: string): Promise<Employee> =>
+    fetch(`${API_URL}/${id}`, {
+      method: 'GET',
+      headers: { 'accept': 'application/json' }
+    }).then(r => r.json()),
+
+  getAll: (): Promise<{ employees: Employee[] }> =>
+    fetch(`${API_URL}/`, {
+      method: 'GET',
+      headers: { 'accept': 'application/json' }
+    }).then(r => r.json()),
+
+  getByEmail: (email: string): Promise<Employee> =>
+    fetch(`${API_URL}/get_by_email`, {
+      method: 'POST',
+      headers: {
+        'accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ email }),
+    }).then(r => {
+      if (!r.ok) throw new Error('Сотрудник не найден');
+      return r.json();
     }),
 };

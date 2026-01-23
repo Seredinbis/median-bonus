@@ -1,4 +1,4 @@
-import type { CreateCustomerDto, GetAllCustomersResponse } from '@/shared/types/customer';
+import type { Customer, CreateCustomerDto, GetAllCustomersResponse } from '@/shared/types/customer';
 
 const API_URL = `${__API_URL__}/customer`;
 

@@ -2,14 +2,24 @@ import { useEmployees } from '../model/useEmployees';
 import { EmployeeModal } from './EmployeeModal';
 
 export const EmployeeManagement = ({ title, controller }: { title: string, controller: any }) => {
-  const { employees, isModalOpen, setIsModalOpen, addEmployee, removeEmployee, isLoading } = controller;
+  const {
+    employees,
+    isModalOpen,
+    openCreateModal,
+    closeModal,
+    handleSave,
+    removeEmployee,
+    openEditModal,
+    isLoading,
+    currentEmployee
+  } = controller;
 
   return (
     <div className="w-full">
       <div className="flex justify-between items-center mb-8">
         <h2 className="text-2xl font-bold">Управление командой</h2>
         <button
-          onClick={() => setIsModalOpen(true)}
+          onClick={openCreateModal}
           className="bg-orange-500 hover:bg-orange-600 px-5 py-2 rounded-xl text-white font-medium transition-all shadow-lg shadow-orange-500/10"
         >
           + Новый сотрудник
@@ -39,12 +49,8 @@ export const EmployeeManagement = ({ title, controller }: { title: string, contr
                   </span>
                 </td>
                 <td className="p-4 text-right">
-                  <button
-                    onClick={() => removeEmployee(user.id)}
-                    className="p-2 hover:bg-red-500/10 rounded-lg group transition-all"
-                  >
-                    <span className="text-red-500/60 group-hover:text-red-500 text-sm">Удалить</span>
-                  </button>
+                  <button onClick={() => openEditModal(user)} className="text-orange-500 mr-4">Изменить</button>
+                  <button onClick={() => removeEmployee(user.id)} className="text-red-500">Удалить</button>
                 </td>
               </tr>
             ))}
@@ -57,9 +63,10 @@ export const EmployeeManagement = ({ title, controller }: { title: string, contr
 
       <EmployeeModal
         isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        onSave={addEmployee}
+        onClose={closeModal}
+        onSave={handleSave}
         loading={isLoading}
+        initialData={currentEmployee}
       />
     </div>
   );

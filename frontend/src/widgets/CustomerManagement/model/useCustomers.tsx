@@ -9,6 +9,16 @@ export function useCustomers() {
   const [currentCustomer, setCurrentCustomer] = useState<Customer | null>(null);
   const [searchLoading, setSearchLoading] = useState(false);
 
+  const openCreateModal = () => {
+    setCurrentCustomer(null); // Сбрасываем, чтобы форма была чистой
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setCurrentCustomer(null);
+  };
+
   const findByPhone = async (phone: string) => {
     setSearchLoading(true);
     try {
@@ -82,6 +92,8 @@ export function useCustomers() {
     setCurrentCustomer,
     findByPhone,
     searchLoading,
-    loadCustomerById
+    loadCustomerById,
+    openCreateModal,
+    closeModal
   };
 }

@@ -1,40 +1,62 @@
 import { useState, useEffect } from 'react';
-import type { Employee, CreateEmployeeDto } from '@/shared/types/employee';
-
+import type { Employee } from '@/shared/types/employee';
 import { employeeApi } from '@/shared/api/employee';
 
 export function useEmployees() {
   const [employees, setEmployees] = useState<Employee[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [currentEmployee, setCurrentEmployee] = useState<Employee | null>(null);
 
-  //ID должен браться из стора авторизации (например, Zustand или Redux)
   const currentBusinessId = "3fa85f64-5717-4562-b3fc-2c963f66afa6";
 
   const loadEmployees = async () => {
     try {
-      const data = await employeeApi.getAll(currentBusinessId);
-      setEmployees(data.employeees || []);
+      const data = await employeeApi.getAll();
+      setEmployees(data.employees || []);
     } catch (e) {
       console.error("Ошибка загрузки:", e);
     }
   };
 
-  const addEmployee = async (formData: Omit<CreateEmployeeDto, 'business_id'>) => {
+  const handleSave = async (formData: any) => {
     setIsLoading(true);
     try {
-      await employeeApi.create({ ...formData, business_id: currentBusinessId });
+      if (currentEmployee?.id) {
+        // Редактирование
+        await employeeApi.update({ ...formData, id: currentEmployee.id });
+      } else {
+        // Создание
+        await employeeApi.create({ ...formData, business_id: currentBusinessId });
+      }
       await loadEmployees();
-      setIsModalOpen(false);
+      closeModal();
     } catch (e) {
-      alert("Ошибка при создании пользователя");
+      alert("Ошибка при сохранении данных");
     } finally {
       setIsLoading(false);
     }
   };
 
+  // ЭТА ФУНКЦИЯ ДЛЯ КНОПКИ "+" (Новый сотрудник)
+  const openCreateModal = () => {
+    setCurrentEmployee(null); // Очищаем, чтобы форма была пустой
+    setIsModalOpen(true);
+  };
+
+  // ЭТА ФУНКЦИЯ ДЛЯ КНОПКИ "Изменить"
+  const openEditModal = (employee: Employee) => {
+    setCurrentEmployee(employee); // Заполняем данными сотрудника
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setCurrentEmployee(null);
+  };
+
   const removeEmployee = async (id: string) => {
-    if (!confirm('Вы уверены, что хотите удалить пользователя?')) return;
+    if (!confirm('Вы уверены?')) return;
     try {
       await employeeApi.delete(id);
       setEmployees(prev => prev.filter(emp => emp.id !== id));
@@ -49,8 +71,13 @@ export function useEmployees() {
     employees,
     isModalOpen,
     isLoading,
+    currentEmployee,
     setIsModalOpen,
-    addEmployee,
-    removeEmployee
+    openCreateModal, // Добавил обратно
+    openEditModal,
+    closeModal,
+    handleSave,
+    removeEmployee,
+    loadEmployees
   };
 }
