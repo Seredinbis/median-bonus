@@ -21,7 +21,6 @@ export default function AdminDashboard() {
       role={role}
       onQuickCreate={handleQuickCreate}
     >
-      {/* Контент страницы в зависимости от вкладки */}
       {activeTab === 'stats' && (
         <section className="animate-in fade-in duration-500">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
@@ -34,7 +33,7 @@ export default function AdminDashboard() {
       )}
 
       {activeTab === 'shops' && (
-        <div className="text-gray-500 bg-admin-bg p-10 rounded-2xl border border-dashed border-gray-800 text-center
+        <div className="bg-app-surface p-10 rounded-2xl border border-dashed border-gray-800 text-center
         italic">
           Модуль управления магазинами находится в разработке...
         </div>

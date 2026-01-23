@@ -33,16 +33,26 @@
   /*--app-bg: #161021; --app-surface: #211a2e; --app-primary: #a855f7; --app-border: #3b2d52;
 
   /* ВАРАНТ 5:/* Цветовая гамма с изображения (Светлая тема с бирюзовым акцентом) */
-  --app-bg: #FBF7F2;
+ /*
+  -app-bg: #FBF7F2;
   --admin-bg: #FBF7F2;
   --sidebar-bg: #618274;
-  --app-surface: #FFFFFF;     /* Белые карточки */
-  --app-primary: #008775;     /* Темно-бирюзовый (Teal) для акцентов */
-  --app-text-main: #2C3E50;   /* Темно-синий/черный для основного текста */
-  --app-text-secondary: #7F8C8D; /* Серый для второстепенного текста */
-  --app-border: #E0E0E0;      /* Тонкие светлые границы */
+  --app-surface: #FFFFFF;
+  --app-primary: #008775;
+  --app-text-main: #2C3E50;
+  --app-text-secondary: #7F8C8D;
+  --app-border: #E0E0E0;
   --header-bg: #c7c6ff;
-
+  */
+  --app-bg: #E5E7EB;
+  --admin-bg: #E5E7EB;
+  --sidebar-bg: #6B7280;
+  --app-surface: #FFFFFF;
+  --app-primary: #008775;
+  --app-text-main: #000000;
+  --app-text-secondary: #7F8C8D;
+  --app-border: #E0E0E0;
+  --header-bg: #6B7280;
 }
 
 body {

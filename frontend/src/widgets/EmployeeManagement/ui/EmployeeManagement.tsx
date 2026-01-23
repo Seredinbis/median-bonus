@@ -7,7 +7,7 @@ export const EmployeeManagement = () => {
   return (
     <div className="w-full">
       <div className="flex justify-between items-center mb-8">
-        <h2 className="text-2xl font-bold text-white">Управление командой</h2>
+        <h2 className="text-2xl font-bold">Управление командой</h2>
         <button
           onClick={() => setIsModalOpen(true)}
           className="bg-orange-500 hover:bg-orange-600 px-5 py-2 rounded-xl text-white font-medium transition-all shadow-lg shadow-orange-500/10"
@@ -16,9 +16,9 @@ export const EmployeeManagement = () => {
         </button>
       </div>
 
-      <div className="bg-[#1E1E1E] rounded-2xl border border-gray-800 overflow-hidden">
+      <div className="bg-app-surface rounded-2xl border border-gray-800 overflow-hidden">
         <table className="w-full text-left border-collapse">
-          <thead className="bg-[#252525] text-gray-400 text-[11px] uppercase tracking-wider">
+          <thead className="bg-header-bg text-[11px] uppercase tracking-wider">
             <tr>
               <th className="p-4 font-semibold">Имя</th>
               <th className="p-4 font-semibold">Email</th>

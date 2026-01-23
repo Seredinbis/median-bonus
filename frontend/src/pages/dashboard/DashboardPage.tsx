@@ -7,10 +7,7 @@ import RewardList from '@/widgets/RewardList/RewardList'
 export default function DashboardPage() {
   return (
     <div className="min-h-screen bg-app-bg p-6">
-      {/* Шапка сверху */}
       <Header />
-
-      {/* Основной контент */}
       <main className="p-6 bg-app-primary max-w-7xl mx-auto">
         <StatsCards />
         
