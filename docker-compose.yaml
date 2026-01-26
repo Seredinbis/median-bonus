@@ -16,8 +16,8 @@ services:
   backend:
     profiles: [ "deploy" ]
     build:
-      context: ./backend
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: backend/Dockerfile
     container_name: backend
     env_file:
       - .env
@@ -31,8 +31,8 @@ services:
   backend_test:
     profiles: [ "test" ]
     build:
-      context: ./backend
-      dockerfile: Dockerfile.test
+      context: .
+      dockerfile: backend/Dockerfile.test
     container_name: backend-test
     env_file:
       - .env

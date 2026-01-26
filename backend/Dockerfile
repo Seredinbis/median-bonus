@@ -7,6 +7,6 @@ RUN pip install --upgrade pip
 RUN pip install uv
 RUN uv pip install --system --no-cache -r pyproject.toml
 
-COPY . .
+COPY backend .
 
 CMD ["python", "-m", "app"]
