@@ -3,7 +3,7 @@ import { CustomerModal } from './CustomerModal';
 
 interface Props {
   title: string;
-  controller: any; // Твой хук useCustomers
+  controller: any;
 }
 
 export const CustomerManagement = ({ title, controller }: Props) => {
@@ -11,13 +11,14 @@ export const CustomerManagement = ({ title, controller }: Props) => {
     customers,
     isModalOpen,
     openCreateModal,
-     closeModal,
+    closeModal,
     setIsModalOpen,
     isLoading,
     handleSave,
+    handleDelete,
     openEditModal,
     currentCustomer,
-    findByPhone // Новая ручка поиска
+    findByPhone
   } = controller;
 
   const [phoneSearch, setPhoneSearch] = useState('');
@@ -77,7 +78,11 @@ export const CustomerManagement = ({ title, controller }: Props) => {
                     >
                       Изменить
                     </button>
-                    <button className="text-red-500/60 hover:text-red-500 text-sm">
+                    <button
+                      onClick={() => handleDelete(user.id)}
+                      className="text-red-500/60 hover:text-red-500 text-sm"
+                      disabled={isLoading} // Хорошим тоном будет заблокировать кнопку во время загрузки
+                    >
                       Удалить
                     </button>
                   </td>

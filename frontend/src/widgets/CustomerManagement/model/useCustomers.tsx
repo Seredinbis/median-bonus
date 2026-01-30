@@ -91,6 +91,22 @@ export function useCustomers(notify: any) {
     setCurrentCustomer(customer);
     setIsModalOpen(true);
   };
+  const handleDelete = async (id: string) => {
+    if (!window.confirm("Вы уверены, что хотите удалить этого клиента?")) return;
+
+    setIsLoading(true);
+    try {
+      const response = await customerApi.delete(id);
+      // Проверка на ok, если API возвращает Fetch Response, иначе просто проверяем факт отсутствия ошибки
+      await loadCustomers();
+      notify.showSuccess("Клиент успешно удален");
+    } catch (e) {
+      notify.showError("Ошибка при удалении");
+      console.error(e);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   useEffect(() => { loadCustomers(); }, []);
 
@@ -100,6 +116,7 @@ export function useCustomers(notify: any) {
     setIsModalOpen,
     isLoading,
     handleSave,
+    handleDelete,
     openEditModal,
     currentCustomer,
     setCurrentCustomer,
