@@ -67,9 +67,9 @@ export const CustomerManagement = ({ title, controller }: Props) => {
           <tbody className="divide-y divide-gray-800">
             {customers.length > 0 ? (
               customers.map((user: any) => (
-                <tr key={user.id} className="hover:bg-[#252525]/50 transition-colors text-gray-200">
+                <tr key={user.id} className="hover:bg-[#252525]/50 transition-colors">
                   <td className="p-4 font-medium">{user.name}</td>
-                  <td className="p-4 text-gray-400 font-mono">{user.phone}</td>
+                  <td className="p-4 font-mono">{user.phone}</td>
                   <td className="p-4 text-right">
                     <button
                       onClick={() => openEditModal(user)}

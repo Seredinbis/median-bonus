@@ -34,9 +34,10 @@ export default function AdminDashboard() {
       {activeTab === 'stats' && (
         <section className="animate-in fade-in duration-500">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-            <StatsCard title="Всего пользователей" value="1,240" />
-            <StatsCard title="Выдано бонусов" value="450,000" color="orange" />
-            <StatsCard title="Активные сегодня" value="89" color="green" />
+          {/* TODO: получить реальные значения из API */}
+            <StatsCard title="Всего пользователей" value="" />
+            <StatsCard title="Выдано бонусов" value="" color="orange" />
+            <StatsCard title="Активные сегодня" value="" color="green" />
           </div>
            <CustomerManagement
             controller={customerController}
