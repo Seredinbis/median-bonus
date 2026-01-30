@@ -27,20 +27,26 @@ def verify_password(password: str, password_hash: str) -> bool:
     return pwd_context.verify(password, password_hash)
 
 
-def access_security() -> JwtAccessBearer:
-    return JwtAccessBearer(
-        secret_key=JWT_SECRET,
-        auto_error=True,
-        access_expires_delta=ACCESS_TTL,
-    )
+access_security = JwtAccessBearer(
+    secret_key=JWT_SECRET,
+    auto_error=True,
+    access_expires_delta=ACCESS_TTL,
+)
 
 
-def refresh_security() -> JwtAuthBase:
-    return JwtRefreshBearer.from_other(
-        access_security(),
-        auto_error=True,
-        refresh_expires_delta=REFRESH_TTL,
-    )
+async def get_access_security() -> JwtAccessBearer:
+    return access_security
+
+
+refresh_security = JwtRefreshBearer.from_other(
+    access_security,
+    auto_error=True,
+    refresh_expires_delta=REFRESH_TTL,
+)
+
+
+async def get_refresh_security() -> JwtAuthBase:
+    return refresh_security
 
 
 revoked_refresh_jti: set[str] = set()

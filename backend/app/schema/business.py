@@ -14,9 +14,9 @@ class BusinessCreateRequest(BaseRequest):
 
 class BusinessUpdateRequest(BaseRequest):
     id: uuid.UUID
-    email: EmailStr | None
-    name: str | None
-    password: str | None
+    email: EmailStr | None = None
+    name: str | None = None
+    password: str | None = None
 
 
 class BusinessDeleteRequest(BaseRequest):

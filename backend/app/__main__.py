@@ -28,6 +28,7 @@ app.add_middleware(
 register_exception_handlers(app)
 
 routers = [
+    auth_router,
     bonus_router,
     business_router,
     customer_router,
@@ -35,7 +36,6 @@ routers = [
     order_router,
     product_router,
     store_router,
-    auth_router,
 ]
 for router in routers:
     app.include_router(router)

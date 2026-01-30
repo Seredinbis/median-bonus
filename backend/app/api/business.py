@@ -1,7 +1,6 @@
 import uuid
 
 from fastapi import APIRouter, Depends, status
-from fastapi_jwt import JwtAuthorizationCredentials
 
 from app.factoriy.service import get_business_service
 from app.schema.business import (
@@ -13,7 +12,6 @@ from app.schema.business import (
     BusinessUpdateRequest,
 )
 from app.service.business import BusinessService
-from app.util.role_checker import require_roles
 
 router = APIRouter(prefix="/business", tags=["business"])
 
@@ -73,7 +71,6 @@ async def get(
 )
 async def get_all(
     service: BusinessService = Depends(get_business_service),
-    _cred: JwtAuthorizationCredentials = Depends(require_roles("business")),
 ) -> BusinessListResponse:
     return await service.get_all()
 

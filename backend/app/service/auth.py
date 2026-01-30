@@ -37,7 +37,7 @@ class AuthService:
             "role": role,
         }
 
-        access_token = access_security().create_access_token(subject=subject)
-        refresh_token = refresh_security().create_refresh_token(subject=subject)
+        access_token = access_security.create_access_token(subject=subject)
+        refresh_token = refresh_security.create_refresh_token(subject=subject)
 
         return TokenResponse(access_token=access_token, refresh_token=refresh_token)
