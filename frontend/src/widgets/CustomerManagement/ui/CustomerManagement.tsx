@@ -3,7 +3,7 @@ import { CustomerModal } from './CustomerModal';
 
 interface Props {
   title: string;
-  controller: any; // Твой хук useCustomers
+  controller: any;
 }
 
 export const CustomerManagement = ({ title, controller }: Props) => {
@@ -11,13 +11,14 @@ export const CustomerManagement = ({ title, controller }: Props) => {
     customers,
     isModalOpen,
     openCreateModal,
-     closeModal,
+    closeModal,
     setIsModalOpen,
     isLoading,
     handleSave,
+    handleDelete,
     openEditModal,
     currentCustomer,
-    findByPhone // Новая ручка поиска
+    findByPhone
   } = controller;
 
   const [phoneSearch, setPhoneSearch] = useState('');
@@ -67,9 +68,9 @@ export const CustomerManagement = ({ title, controller }: Props) => {
           <tbody className="divide-y divide-gray-800">
             {customers.length > 0 ? (
               customers.map((user: any) => (
-                <tr key={user.id} className="hover:bg-[#252525]/50 transition-colors text-gray-200">
+                <tr key={user.id} className="hover:bg-[#252525]/50 transition-colors">
                   <td className="p-4 font-medium">{user.name}</td>
-                  <td className="p-4 text-gray-400 font-mono">{user.phone}</td>
+                  <td className="p-4 font-mono">{user.phone}</td>
                   <td className="p-4 text-right">
                     <button
                       onClick={() => openEditModal(user)}
@@ -77,7 +78,11 @@ export const CustomerManagement = ({ title, controller }: Props) => {
                     >
                       Изменить
                     </button>
-                    <button className="text-red-500/60 hover:text-red-500 text-sm">
+                    <button
+                      onClick={() => handleDelete(user.id)}
+                      className="text-red-500/60 hover:text-red-500 text-sm"
+                      disabled={isLoading} // Хорошим тоном будет заблокировать кнопку во время загрузки
+                    >
                       Удалить
                     </button>
                   </td>

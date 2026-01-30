@@ -34,7 +34,7 @@ export const customerApi = {
 
   delete: (id: string) =>
     fetch(`${API_URL}/delete`, {
-      method: 'POST',
+      method: 'DELETE',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ id }),
     }),

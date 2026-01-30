@@ -4,14 +4,17 @@ import { EmployeeManagement } from '@/widgets/EmployeeManagement/ui/EmployeeMana
 import { useEmployees } from '@/widgets/EmployeeManagement/model/useEmployees';
 import { CustomerManagement } from '@/widgets/CustomerManagement/ui/CustomerManagement';
 import { useCustomers } from '@/widgets/CustomerManagement/model/useCustomers';
+import { useNotification } from '@/shared/lib/hooks/useNotification';
+import { NotificationModal } from '@/shared/ui/NotificationModal/NotificationModal';
 import { StatsCard } from '@/shared/ui/StatsCard/StatsCard';
 import type { UserRole } from '@/shared/types/user';
 
 export default function AdminDashboard() {
   const [activeTab, setActiveTab] = useState('stats');
   const [role] = useState<UserRole>('admin');
-  const employeeController = useEmployees();
-  const customerController = useCustomers();
+  const notify = useNotification();
+  const employeeController = useEmployees(notify);
+  const customerController = useCustomers(notify);
 
   // Логика быстрого создания
   const handleQuickCreate = (tabId: string) => {
@@ -31,9 +34,10 @@ export default function AdminDashboard() {
       {activeTab === 'stats' && (
         <section className="animate-in fade-in duration-500">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-            <StatsCard title="Всего пользователей" value="1,240" />
-            <StatsCard title="Выдано бонусов" value="450,000" color="orange" />
-            <StatsCard title="Активные сегодня" value="89" color="green" />
+          {/* TODO: получить реальные значения из API */}
+            <StatsCard title="Всего пользователей" value="" />
+            <StatsCard title="Выдано бонусов" value="" color="orange" />
+            <StatsCard title="Активные сегодня" value="" color="green" />
           </div>
            <CustomerManagement
             controller={customerController}
@@ -57,6 +61,10 @@ export default function AdminDashboard() {
           />
         </div>
       )}
+      <NotificationModal
+        state={notify.notification}
+        onClose={notify.closeNotification}
+      />
     </AdminLayout>
   );
 }

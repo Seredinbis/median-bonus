@@ -38,9 +38,9 @@ export const EmployeeManagement = ({ title, controller }: { title: string, contr
           </thead>
           <tbody className="divide-y divide-gray-800">
             {employees.map(user => (
-              <tr key={user.id} className="hover:bg-[#252525]/50 transition-colors text-gray-200">
+              <tr key={user.id} className="hover:bg-[#252525]/50 transition-colors">
                 <td className="p-4 font-medium">{user.name}</td>
-                <td className="p-4 text-gray-400">{user.email}</td>
+                <td className="p-4">{user.email}</td>
                 <td className="p-4 text-center">
                   <span className={`px-2 py-1 rounded-lg text-[10px] font-bold uppercase ${
                     user.status === 'activated' ? 'bg-green-500/10 text-green-500' : 'bg-red-500/10 text-red-500'
