@@ -8,5 +8,7 @@ RUN pip install uv
 RUN uv pip install --system --no-cache -r pyproject.toml
 
 COPY backend .
+COPY backend/entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
 
-CMD ["python", "-m", "app"]
+ENTRYPOINT ["/entrypoint.sh"]

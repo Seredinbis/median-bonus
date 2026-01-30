@@ -7,33 +7,17 @@ from sqlalchemy import pool
 
 from app.domain.base import Base
 
-# noinspection PyUnresolvedReferences
-
-# noinspection PyUnresolvedReferences
-
-# noinspection PyUnresolvedReferences
-
-# noinspection PyUnresolvedReferences
-
-# noinspection PyUnresolvedReferences
-
-# noinspection PyUnresolvedReferences
-
-# noinspection PyUnresolvedReferences
-
-# noinspection PyUnresolvedReferences
-
 config = context.config
 fileConfig(config.config_file_name)
 
 target_metadata = Base.metadata
 
-load_dotenv(os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), ".env"))
+load_dotenv(os.path.join(os.path.dirname(__file__), ".env"))
 
 DB_USER = os.getenv("DB_USER")
 DB_PASSWORD = os.getenv("DB_PASSWORD")
-DB_HOST = "localhost"
-DB_PORT = os.getenv("DB_PORT_EXTERNAL")
+DB_HOST = os.getenv("DB_HOST")
+DB_PORT = os.getenv("DB_PORT")
 DB_NAME = os.getenv("DB_NAME")
 DATABASE_URL = f"postgresql+asyncpg://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
 
